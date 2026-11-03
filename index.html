@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kiểm tra Lịch sử lớp 10 - Bài 1 đến Bài 4 (Kết nối tri thức)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col justify-between">
+
+    <!-- Header -->
+    <header class="bg-indigo-700 text-white shadow-md py-6 px-4">
+        <div class="max-w-4xl mx-auto text-center">
+            <h1 class="text-2xl md:text-3xl font-bold">Ôn tập Lịch sử Lớp 10 (Kết nối tri thức)</h1>
+            <p class="text-indigo-200 mt-2 text-sm md:text-base">Bài 1 đến Bài 4: Sử học, Tri thức lịch sử, Vai trò sử học và Các nền văn minh phương Đông</p>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="max-w-3xl w-full mx-auto p-4 md:p-6 my-6 bg-white rounded-2xl shadow-lg border border-slate-100 flex-grow">
+
+        <!-- Welcome / Start Screen -->
+        <div id="start-screen" class="text-center py-8">
+            <div class="mb-6">
+                <span class="bg-indigo-100 text-indigo-800 text-sm font-semibold px-4 py-1.5 rounded-full">Tổng hợp 50 câu hỏi</span>
+            </div>
+            <h2 class="text-xl md:text-2xl font-bold text-slate-800 mb-4">Sẵn sàng thử sức với 50 câu hỏi ôn tập?</h2>
+            <p class="text-slate-600 max-w-xl mx-auto mb-8 text-sm md:text-base">
+                Bài kiểm tra bao gồm các câu hỏi trắc nghiệm nhiều lựa chọn và dạng đúng/sai bao trùm toàn bộ kiến thức trọng tâm từ Bài 1 đến Bài 4 sách Lịch sử 10. Hãy đọc kỹ câu hỏi và chúc bạn làm bài thật tốt!
+            </p>
+            <button onclick="startQuiz()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-8 py-3.5 rounded-xl shadow-md transition transform hover:-translate-y-0.5">
+                Bắt đầu làm bài
+            </button>
+        </div>
+
+        <!-- Quiz Container (Hidden initially) -->
+        <div id="quiz-screen" class="hidden">
+            <!-- Progress & Score Bar -->
+            <div class="flex justify-between items-center mb-6 border-b pb-4">
+                <span id="question-counter" class="text-sm font-medium text-slate-500">Câu 1 / 50</span>
+                <span id="score-tracker" class="text-sm font-semibold text-indigo-600 bg-indigo-50 px-3 py-1 rounded-full">Điểm: 0</span>
+            </div>
+
+            <!-- Question Card -->
+            <div class="mb-6">
+                <span id="question-tag" class="text-xs font-bold uppercase tracking-wider text-indigo-500 bg-indigo-50 px-2.5 py-1 rounded">Chủ đề</span>
+                <h3 id="question-text" class="text-lg md:text-xl font-semibold text-slate-900 mt-3 leading-snug"></h3>
+            </div>
+
+            <!-- Options Container -->
+            <div id="options-container" class="space-y-3 mb-6">
+                <!-- Dynamic Options injected here -->
+            </div>
+
+            <!-- Explanation Box -->
+            <div id="explanation-box" class="hidden mb-6 p-4 rounded-xl border bg-slate-50">
+                <h4 id="explanation-title" class="font-bold text-sm mb-1">Giải thích:</h4>
+                <p id="explanation-text" class="text-sm text-slate-700"></p>
+            </div>
+
+            <!-- Navigation Button -->
+            <div class="flex justify-end pt-4 border-t">
+                <button id="next-btn" onclick="nextQuestion()" class="hidden bg-indigo-600 hover:bg-indigo-700 text-white font-medium px-6 py-2.5 rounded-xl transition">
+                    Câu tiếp theo
+                </button>
+            </div>
+        </div>
+
+        <!-- Result Screen (Hidden initially) -->
+        <div id="result-screen" class="hidden text-center py-8">
+            <div class="w-20 h-20 bg-indigo-100 text-indigo-600 rounded-full flex items-center justify-center mx-auto mb-4 text-3xl font-bold" id="final-score-badge">
+                0/50
+            </div>
+            <h2 class="text-2xl font-bold text-slate-800 mb-2">Hoàn thành bài kiểm tra!</h2>
+            <p id="result-comment" class="text-slate-600 mb-6 text-base"></p>
+            <button onclick="restartQuiz()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-8 py-3 rounded-xl shadow-md transition">
+                Làm lại bài kiểm tra
+            </button>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="text-center py-4 text-xs text-slate-400">
+        Lịch sử lớp 10 - Kết nối tri thức với cuộc sống
+    </footer>
+
+    <!-- Quiz Data & Logic Script -->
+    <script>
+        const questions = [
+            // Bài 1: Hiện thực lịch sử và nhận thức lịch sử (Câu 1 - 12)
+            {
+                tag: "Bài 1 - Hiện thực lịch sử",
+                question: "Hiện thực lịch sử có đặc điểm nào dưới đây?",
+                options: [
+                    { text: "Tồn tại hoàn toàn khách quan, độc lập ngoài ý muốn của con người.", isCorrect: true, rationale: "Hiện thực lịch sử là những gì đã thực sự diễn ra trong quá khứ, tồn tại khách quan và con người không thể thay đổi được." },
+                    { text: "Là những hiểu biết, suy nghĩ của nhà sử học về quá khứ.", isCorrect: false, rationale: "Đây là đặc trưng của nhận thức lịch sử." },
+                    { text: "Mang tính chủ quan tùy thuộc vào góc nhìn người nghiên cứu.", isCorrect: false, rationale: "Tính chủ quan thuộc về nhận thức lịch sử." },
+                    { text: "Có thể thay đổi tùy thuộc vào thời điểm quan sát của con người hiện tại.", isCorrect: false, rationale: "Hiện thực lịch sử đã cố định và không thể thay đổi." }
+                ],
+                hint: "Hãy nhớ lại bản chất khách quan của những sự việc đã xảy ra trong quá khứ."
+            },
+            {
+                tag: "Bài 1 - Nhận thức lịch sử",
+                question: "Nhận thức lịch sử có đặc điểm nào sau đây?",
+                options: [
+                    { text: "Luôn phản ánh chính xác 100% hiện thực lịch sử mà không cần kiểm chứng.", isCorrect: false, rationale: "Nhận thức lịch sử có thể thay đổi hoặc có khoảng cách nhất định so với hiện thực tùy thuộc vào nguồn tư liệu." },
+                    { text: "Mang tính chủ quan và có thể thay đổi, bổ sung theo thời gian.", isCorrect: true, rationale: "Nhận thức lịch sử là bức tranh quá khứ qua lăng kính chủ quan của con người và được bồi đắp liên tục." },
+                    { text: "Tồn tại độc lập, không phụ thuộc vào tư liệu lịch sử có sẵn.", isCorrect: false, rationale: "Nhận thức lịch sử phụ thuộc rất lớn vào sử liệu và góc độ tiếp cận." },
+                    { text: "Chỉ do một cá nhân duy nhất tạo ra và không bao giờ thay đổi.", isCorrect: false, rationale: "Nhận thức lịch sử do cộng đồng nhà nghiên cứu và xã hội đúc kết, phát triển qua các thời kỳ." }
+                ],
+                hint: "Hãy suy nghĩ về việc vì sao qua mỗi thời kỳ, hiểu biết của con người về một sự kiện lịch sử lại có thể được làm sáng tỏ thêm."
+            },
+            {
+                tag: "Bài 1 - Sử học",
+                question: "Đối tượng nghiên cứu của khoa học lịch sử là gì?",
+                options: [
+                    { text: "Toàn bộ quá khứ của loài người diễn ra trên mọi lĩnh vực.", isCorrect: true, rationale: "Sử học nghiên cứu toàn bộ quá khứ của xã hội loài người bao gồm chính trị, kinh tế, văn hóa, xã hội." },
+                    { text: "Chỉ các cuộc chiến tranh và sự thay đổi các triều đại phong kiến.", isCorrect: false, rationale: "Chiến tranh chỉ là một phần nhỏ, đối tượng của Sử học bao trùm mọi hoạt động của con người." },
+                    { text: "Các sự kiện tương lai có thể xảy ra trong xã hội loài người.", isCorrect: false, rationale: "Sử học nghiên cứu về quá khứ chứ không phải tương lai." },
+                    { text: "Quá trình tiến hóa sinh học của loài người từ vượn thành người.", isCorrect: false, rationale: "Đây là đối tượng nghiên cứu chủ yếu của Nhân chủng học và Sinh học tiến hóa." }
+                ],
+                hint: "Đối tượng của Sử học rộng lớn hơn nhiều so với chỉ các sự kiện chính trị."
+            },
+            {
+                tag: "Bài 1 - Chức năng nhiệm vụ",
+                question: "Chức năng khoa học và xã hội của Sử học nhằm mục đích gì chủ yếu?",
+                    options: [
+                    { text: "Khôi phục chính xác quá khứ và giáo dục, rút ra bài học kinh nghiệm.", isCorrect: true, rationale: "Sử học vừa có chức năng khoa học (khôi phục chân thực quá khứ) vừa có chức năng xã hội (giáo dục và rút bài học)." },
+                    { text: "Chỉ để dự báo chính xác 100% các biến động kinh tế tài chính ngắn hạn.", isCorrect: false, rationale: "Sử học rút ra bài học kinh nghiệm tổng quát chứ không dự báo tài chính ngắn hạn." },
+                    { text: "Phục vụ cho việc mua bán và kinh doanh cổ vật quý hiếm.", isCorrect: false, rationale: "Đó là hoạt động thị trường cổ vật, không phải chức năng cốt lõi của Sử học." },
+                    { text: "Làm công cụ chính trị để dịch chuyển biên giới quốc gia.", isCorrect: false, rationale: "Chức năng của Sử học là khoa học chân lý và giáo dục nhân cách, không phải công cụ áp đặt." }
+                ],
+                hint: "Sử học giúp chúng ta hiểu quá khứ để làm gì cho hiện tại?"
+            },
+            {
+                tag: "Bài 1 - Sử liệu",
+                question: "Loại sử liệu nào sau đây thuộc nhóm sử liệu truyền miệng?",
+                options: [
+                    { text: "Thần thoại, truyền thuyết, ca dao, tục ngữ lưu truyền dân gian.", isCorrect: true, rationale: "Sử liệu truyền miệng gồm các câu chuyện, truyền thuyết, ca dao được kể hoặc truyền qua nhiều thế hệ." },
+                    { text: "Các văn bản chữ viết trên thẻ tre, lụa hoặc giấy cổ.", isCorrect: false, rationale: "Đây là sử liệu chữ viết." },
+                    { text: "Các di tích kiến trúc đền tháp, trống đồng Đông Sơn.", isCorrect: false, rationale: "Đây là sử liệu hiện vật." },
+                    { text: "Các tệp ghi âm phỏng vấn nhân chứng lịch sử số hóa.", isCorrect: false, rationale: "Đây thuộc về sử liệu điện tử/hiện đại." }
+                ],
+                hint: "Truyền miệng là những thứ được truyền lại qua lời nói, câu ca dao."
+            },
+            {
+                tag: "Bài 1 - Sử liệu",
+                question: "Trống đồng Đông Sơn được xếp vào nhóm sử liệu nào trong nghiên cứu lịch sử?",
+                options: [
+                    { text: "Sử liệu hiện vật.", isCorrect: true, rationale: "Trống đồng Đông Sơn là di vật khảo cổ vật thể, thuộc nhóm sử liệu hiện vật." },
+                    { text: "Sử liệu chữ viết.", isCorrect: false, rationale: "Trống đồng là hiện vật vật chất, không phải văn bản chữ viết thuần túy." },
+                    { text: "Sử liệu truyền miệng.", isCorrect: false, rationale: "Trống đồng tồn tại vật chất hữu hình, không phải lời kể truyền miệng." },
+                    { text: "Sử liệu điện tử.", isCorrect: false, rationale: "Đây là hiện vật cổ xưa từ thời đại kim khí." }
+                ],
+                hint: "Đồ vật do con người tạo ra và cầm nắm, quan sát được gọi là gì?"
+            },
+            {
+                tag: "Bài 1 - Nhận định đúng sai",
+                question: "Đúng hay Sai: Hiện thực lịch sử có thể thay đổi tùy thuộc vào góc nhìn và cảm xúc của người nghiên cứu ở hiện tại.",
+                options: [
+                    { text: "Sai. Hiện thực lịch sử tồn tại khách quan, đã xảy ra và không thể thay đổi.", isCorrect: true, rationale: "Chính xác, hiện thực lịch sử là khách quan và cố định, chỉ có 'nhận thức lịch sử' mới thay đổi tùy người nghiên cứu." },
+                    { text: "Đúng. Vì bất kỳ ai cũng có quyền viết lại quá khứ theo ý thích cá nhân.", isCorrect: false, rationale: "Nhận định này sai vì hiện thực lịch sử là khách quan không phụ thuộc ý muốn chủ quan." },
+                    { text: "Đúng một phần khi nói về lịch sử hiện đại.", isCorrect: false, rationale: "Hiện thực lịch sử của mọi thời kỳ đều mang tính khách quan." },
+                    { text: "Sai vì nhận thức lịch sử hoàn toàn đồng nhất với hiện thực lịch sử.", isCorrect: false, rationale: "Nhận thức lịch sử và hiện thực lịch sử là hai khái niệm khác nhau." }
+                ],
+                hint: "Phân biệt rõ giữa 'hiện thực lịch sử' (khách quan) và 'nhận thức lịch sử' (chủ quan)."
+            },
+            {
+                tag: "Bài 1 - Nhận định đúng sai",
+                question: "Đúng hay Sai: Nhận thức lịch sử luôn phong phú, đa dạng và có thể sâu sắc hơn theo thời gian nhờ sự phát triển của khoa học công nghệ.",
+                options: [
+                    { text: "Đúng. Nhận thức lịch sử được bổ sung và làm sáng tỏ liên tục nhờ sử liệu mới và công nghệ.", isCorrect: true, rationale: "Đúng vậy, nhận thức lịch sử phản ánh năng lực và tư liệu của con người, càng ngày càng hoàn thiện hơn." },
+                    { text: "Sai. Nhận thức lịch sử cố định ngay từ lần ghi chép đầu tiên.", isCorrect: false, rationale: "Nhận thức lịch sử thay đổi và phát triển theo thời gian." },
+                    { text: "Sai vì khoa học công nghệ không liên quan gì đến việc hiểu biết lịch sử.", isCorrect: false, rationale: "Khoa học công nghệ giúp xác định niên đại, khảo cổ học phát hiện di tích mới." },
+                    { text: "Đúng nhưng chỉ đúng với thời kỳ cổ đại.", isCorrect: false, rationale: "Điều này đúng với mọi giai đoạn lịch sử." }
+                ],
+                hint: "Công nghệ C-14, khảo cổ học giúp con người hiểu sâu hơn về quá khứ."
+            },
+            {
+                tag: "Bài 1 - Sử liệu",
+                question: "Loại sử liệu nào có độ tin cậy cao nhất khi nghiên cứu các sự kiện diễn ra hàng ngàn năm trước?",
+                options: [
+                    { text: "Sử liệu hiện vật và sử liệu chữ viết gốc.", isCorrect: true, rationale: "Hiện vật và chữ viết gốc là những chứng cứ xác thực nhất giúp phản ánh hiện thực lịch sử." },
+                    { text: "Sử liệu truyền miệng qua nhiều thế hệ dân gian.", isCorrect: false, rationale: "Truyền miệng dễ bị tam sao thất bản theo thời gian." },
+                    { text: "Các câu chuyện cổ tích hư cấu dân gian.", isCorrect: false, rationale: "Cổ tích chứa yếu tố tưởng tượng, không phải sử liệu chính thống đáng tin cậy." },
+                    { text: "Các lời đồn đại trên mạng xã hội hiện nay.", isCorrect: false, rationale: "Đồn đại không có cơ sở khoa học lịch sử." }
+                ],
+                hint: "Nguồn sử liệu nào ít bị bóp méo bởi trí tưởng tượng dân gian nhất?"
+            },
+            {
+                tag: "Bài 1 - Sử học",
+                question: "Nhiệm vụ cốt lõi của nhà sử học là gì?",
+                options: [
+                    { text: "Khôi phục lại bức tranh quá khứ một cách trung thực, khách quan và khoa học.", isCorrect: true, rationale: "Nhiệm vụ lớn nhất của nhà sử học là tái hiện quá khứ chân thực nhất có thể." },
+                    { text: "Sáng tác tiểu thuyết lịch sử hư cấu để giải trí.", isCorrect: false, rationale: "Tiểu thuyết thuộc về văn học nghệ thuật, không phải công trình nghiên cứu sử học." },
+                    { text: "Thay đổi các sự kiện lịch sử theo định hướng chủ quan.", isCorrect: false, rationale: "Nhà sử học phải tuân thủ tính khách quan khoa học." },
+                    { text: "Dự đoán chính xác kết quả các trận đấu thể thao tương lai.", isCorrect: false, rationale: "Đó không phải là nhiệm vụ của Sử học." }
+                ],
+                hint: "Sử học hướng tới sự thật khách quan của quá khứ."
+            },
+            {
+                tag: "Bài 1 - Nhận định đúng sai",
+                question: "Đúng hay Sai: Thần thoại và truyền thuyết không có giá trị đối với nghiên cứu sử học.",
+                options: [
+                    { text: "Sai. Truyền thuyết và thần thoại vẫn ẩn chứa những thông tin cốt lõi về cội nguồn, cần được chắt lọc và kiểm chứng.", isCorrect: true, rationale: "Mặc dù có yếu tố thần kỳ, sử liệu truyền miệng/truyền thuyết cung cấp manh mối quý giá về quá khứ." },
+                    { text: "Đúng vì chúng hoàn toàn là sản phẩma tưởng tượng hư cấu.", isCorrect: false, rationale: "Truyền thuyết thường phản ánh bóng dáng của các sự kiện lịch sử có thật." },
+                    { text: "Đúng vì sử học chỉ dùng văn bản nhà nước.", isCorrect: false, rationale: "Sử học sử dụng đa dạng các nguồn sử liệu khác nhau." },
+                    { text: "Sai hoàn toàn vì chúng chính là hiện thực lịch sử tuyệt đối.", isCorrect: false, rationale: "Truyền thuyết không phải hiện thực tuyệt đối mà cần kiểm chứng." }
+                ],
+                hint: "Nhiều truyền thuyết Việt Nam phản ánh cuộc đấu tranh chống giặc ngoại xâm thời dựng nước."
+            },
+            {
+                tag: "Bài 1 - Khái niệm",
+                question: "Mối quan hệ giữa hiện thực lịch sử và nhận thức lịch sử là gì?",
+                options: [
+                    { text: "Hiện thực lịch sử là gốc, nhận thức lịch sử là sự phản ánh hiện thực đó vào tư duy con người.", isCorrect: true, rationale: "Hiện thực là đối tượng được nhận thức phản ánh; nhận thức hướng tới hiện thực." },
+                    { text: "Nhận thức lịch sử tạo ra hiện thực lịch sử.", isCorrect: false, rationale: "Con người không thể dùng nhận thức để tạo ra những gì đã xảy ra trong quá khứ." },
+                    { text: "Hai khái niệm này hoàn toàn độc lập, không có liên hệ gì với nhau.", isCorrect: false, rationale: "Chúng gắn bó mật thiết với nhau trong khoa học lịch sử." },
+                    { text: "Hiện thực lịch sử phụ thuộc hoàn toàn vào nhận thức lịch sử.", isCorrect: false, rationale: "Hiện thực tồn tại khách quan, dù con người có nhận thức được hay không." }
+                ],
+                hint: "Cái gì có trước: sự việc xảy ra hay hiểu biết của con người về sự việc đó?"
+            },
+
+            // Bài 2: Tri thức lịch sử và cuộc sống (Câu 13 - 24)
+            {
+                tag: "Bài 2 - Vai trò tri thức lịch sử",
+                question: "Tri thức lịch sử giúp cá nhân điều gì quan trọng nhất trong đời sống?",
+                options: [
+                    { text: "Hiểu rõ cội nguồn, truyền thống gia đình, dòng họ, dân tộc và bồi đắp nhân cách.", isCorrect: true, rationale: "Tri thức lịch sử giúp con người định hình gốc gác, tự hào dân tộc và rèn luyện đạo đức." },
+                    { text: "Giúp dự đoán chính xác giá vàng và chứng khoán hằng ngày.", isCorrect: false, rationale: "Đó là kiến thức kinh tế tài chính thực tế, không phải vai trò cốt lõi của sử học." },
+                    { text: "Cung cấp công thức hóa học để chế tạo vật liệu mới.", isCorrect: false, rationale: "Đó là vai trò của khoa học tự nhiên." },
+                    { text: "Giúp lập trình phần mềm máy tính thông minh.", isCorrect: false, rationale: "Đó là lĩnh vực công nghệ thông tin." }
+                ],
+                hint: "Lịch sử giúp chúng ta biết mình từ đâu tới và nên sống như thế nào."
+            },
+            {
+                tag: "Bài 2 - Học tập suốt đời",
+                question: "Tại sao con người cần phải học tập lịch sử suốt đời?",
+                options: [
+                    { text: "Vì tri thức lịch sử vô cùng rộng lớn, luôn được bổ sung và cập nhật những phát hiện mới.", isCorrect: true, rationale: "Kho tàng lịch sử nhân loại rất khổng lồ và không ngừng được làm mới qua các nghiên cứu khảo cổ." },
+                    { text: "Vì nếu không học lịch sử suốt đời sẽ bị phạt theo luật pháp quốc tế.", isCorrect: false, rationale: "Học lịch sử suốt đời là nhu cầu phát triển bản thân, không phải hình thức luật định." },
+                    { text: "Vì kiến thức lịch sử phổ thông là quá ít ỏi và sai lệch.", isCorrect: false, rationale: "Kiến thức phổ thông là nền tảng cơ bản, việc học suốt đời giúp mở rộng tầm nhìn." },
+                    { text: "Vì lịch sử lặp lại y hệt từng chi tiết qua các thời kỳ.", isCorrect: false, rationale: "Lịch sử không bao giờ lặp lại hoàn toàn y hệt." }
+                ],
+                hint: "Khoa học lịch sử và thế giới xung quanh luôn vận động và phát triển không ngừng."
+            },
+            {
+                tag: "Bài 2 - Ứng dụng thực tiễn",
+                question: "Trong đời sống xã hội, bài học kinh nghiệm từ lịch sử thường được ứng dụng để làm gì?",
+                options: [
+                    { text: "Giải quyết các vấn đề thực tiễn của hiện tại và định hướng cho tương lai.", isCorrect: true, rationale: "'Ôn cố tri tân' - ôn lại quá khứ để hiểu hiện tại và định hướng tương lai." },
+                    { text: "Sao chép y nguyên mô hình của quá khứ áp dụng cho mọi thời đại.", isCorrect: false, rationale: "Hoàn cảnh lịch sử luôn thay đổi, cần vận dụng sáng tạo chứ không sao chép máy móc." },
+                    { text: "Chỉ để trưng bày trong bảo tàng mà không có giá trị thực tế.", isCorrect: false, rationale: "Lịch sử có sức sống thực tiễn mạnh mẽ trong quản lý đất nước, ngoại giao." },
+                    { text: "Nhằm mục đích hoài niệm quá khứ đau buồn.", isCorrect: false, rationale: "Mục đích là rút ra bài học phát triển chứ không phải chìm đắm trong đau buồn." },
+                ],
+                hint: "Quá khứ là bài học quý giá cho hiện tại."
+            },
+            {
+                tag: "Bài 2 - Nhận định đúng sai",
+                question: "Đúng hay Sai: Học tập lịch sử chỉ cần thiết cho những ai muốn trở thành nhà sử học chuyên nghiệp hoặc giáo viên.",
+                options: [
+                    { text: "Sai. Tri thức lịch sử cần thiết cho mọi công dân trong đời sống xã hội hiện đại.", isCorrect: true, rationale: "Bất kỳ công dân nào cũng cần hiểu biết lịch sử để hội nhập, hiểu văn hóa và ứng xử." },
+                    { text: "Đúng vì người bình thường không cần biết quá khứ đã qua.", isCorrect: false, rationale: "Nhận định này sai vì lịch sử gắn liền với đời sống cộng đồng và bản sắc mỗi người." },
+                    { text: "Đúng vì lịch sử không đem lại giá trị kinh tế.", isCorrect: false, rationale: "Lịch sử đóng góp lớn cho phát triển kinh tế qua du lịch di sản." },
+                    { text: "Sai nhưng chỉ đúng với học sinh cấp 3.", isCorrect: false, rationale: "Lịch sử cần thiết cho suốt cuộc đời con người." }
+                ],
+                hint: "Mỗi người dân đều cần có hiểu biết lịch sử và văn hóa dân tộc mình."
+            },
+            {
+                tag: "Bài 2 - Du lịch và lịch sử",
+                question: "Sự gắn kết giữa tri thức lịch sử và ngành du lịch hiện đại mang lại lợi ích gì nổi bật?",
+                options: [
+                    { text: "Thúc đẩy phát triển kinh tế - xã hội, quảng bá văn hóa và giáo dục truyền thống.", isCorrect: true, rationale: "Du lịch di sản/lịch sử vừa tạo nguồn lực kinh tế vừa lan tỏa giá trị văn hóa lịch sử." },
+                    { text: "Làm mai một và hủy hoại hoàn toàn các di tích lịch sử gốc.", isCorrect: false, rationale: "Du lịch bền vững đặt ra yêu cầu bảo tồn di tích chứ không phải hủy hoại." },
+                    { text: "Chỉ phục vụ cho khách du lịch nước ngoài, không có ý nghĩa với người bản địa.", isCorrect: false, rationale: "Du lịch lịch sử giáo dục lòng yêu nước cho cả người dân trong nước." },
+                    { text: "Làm giảm giá trị tinh thần của các di sản văn hóa.", isCorrect: false, rationale: "Phát huy di sản qua du lịch giúp tôn vinh giá trị di sản." }
+                ],
+                hint: "Tham quan các khu di tích lịch sử đem lại lợi ích gì cho địa phương?"
+            },
+            {
+                tag: "Bài 2 - Nhận định đúng sai",
+                question: "Đúng hay Sai: Tri thức lịch sử giúp con người tránh lặp lại những sai lầm của thế hệ đi trước.",
+                options: [
+                    { text: "Đúng. Việc đúc kết bài học từ thất bại trong quá khứ là kim chỉ nam cho hiện tại.", isCorrect: true, rationale: "Lịch sử cung cấp gương sáng và bài học xương máu để thế hệ sau không lặp lại sai lầm." },
+                    { text: "Sai vì hoàn cảnh hiện tại hoàn toàn khác biệt, quá khứ không có giá trị tham khảo.", isCorrect: false, rationale: "Mặc dù hoàn cảnh khác nhau nhưng quy luật và bài học ứng xử vẫn có giá trị tham khảo sâu sắc." },
+                    { text: "Sai vì con người luôn thông minh hơn quá khứ.", isCorrect: false, rationale: "Tri thức nhân loại là sự kế thừa liên tục qua các thế hệ." },
+                    { text: "Đúng nhưng chỉ áp dụng cho lĩnh vực chiến tranh quân sự.", isCorrect: false, rationale: "Áp dụng cho mọi lĩnh vực: kinh tế, xã hội, ngoại giao, đời sống." }
+                ],
+                hint: "Ông cha ta thường nói 'lấy xưa làm gương cho nay'."
+            },
+            {
+                tag: "Bài 2 - Ý nghĩa",
+                question: "Câu nói 'Dân ta phải biết sử ta, cho tường gốc tích nước nhà Việt Nam' nhấn mạnh điều gì?",
+                options: [
+                    { text: "Tầm quan trọng của việc học tập lịch sử đối với mỗi người dân Việt Nam.", isCorrect: true, rationale: "Bác Hồ khẳng định người Việt Nam phải hiểu rõ lịch sử cội nguồn dân tộc mình." },
+                    { text: "Yêu cầu phải thuộc lòng tất cả các mốc thời gian chiến tranh thế giới.", isCorrect: false, rationale: "Câu nói nhấn mạnh cội nguồn lịch sử dân tộc Việt Nam." },
+                    { text: "Sự cần thiết phải nghiên cứu lịch sử thế giới cổ đại.", isCorrect: false, rationale: "Đây là nói về lịch sử nước nhà Việt Nam." },
+                    { text: "Tầm quan trọng của việc học ngoại ngữ.", isCorrect: false, rationale: "Không liên quan đến ngoại ngữ." }
+                ],
+                hint: "Đây là câu thơ nổi tiếng của Chủ tịch Hồ Chí Minh."
+            },
+            {
+                tag: "Bài 2 - Nhận định đúng sai",
+                question: "Đúng hay Sai: Học lịch sử suốt đời nghĩa là học sinh phải ngồi ghế nhà trường học môn lịch sử đến hết đời.",
+                options: [
+                    { text: "Sai. Học suốt đời là quá trình tự học, cập nhật kiến thức qua sách báo, bảo tàng, cuộc sống mọi lúc mọi nơi.", isCorrect: true, rationale: "Học suốt đời mang nghĩa rộng là tinh thần tự học, cập nhật tri thức trọn đời chứ không chỉ ở trường học." },
+                    { text: "Đúng. Phải học liên tục trong phòng thi cử suốt đời.", isCorrect: false, rationale: "Học suốt đời không có nghĩa là thi cử áp lực suốt đời." },
+                    { text: "Đúng vì sử học quá khó để hiểu hết trong 3 năm cấp 3.", isCorrect: false, rationale: "Ý nghĩa của học suốt đời là phương thức tự trau dồi tri thức cá nhân." },
+                    { text: "Sai vì học hết cấp 3 là đủ kiến thức lịch sử.", isCorrect: false, rationale: "Kiến thức xã hội luôn vận động đòi hỏi học tập liên tục." }
+                ],
+                hint: "Học suốt đời là khái niệm giáo dục hiện đại về tinh thần tự học."
+            },
+            {
+                tag: "Bài 2 - Vai trò",
+                question: "Yếu tố nào dưới đây là nền tảng giúp xây dựng ý thức đoàn kết cộng đồng và lòng tự hào dân tộc?",
+                options: [
+                    { text: "Tri thức lịch sử và truyền thống văn hóa tốt đẹp của dân tộc.", isCorrect: true, rationale: "Lịch sử chung và truyền thống dựng nước giữ nước gắn kết các thành viên trong cộng đồng dân tộc." },
+                    { text: "Sự đồng nhất về ngoại hình của tất cả các công dân.", isCorrect: false, rationale: "Ngoại hình không quyết định tinh thần đoàn kết dân tộc." },
+                    { text: "Sự phát triển của công nghệ trí tuệ nhân tạo.", isCorrect: false, rationale: "Công nghệ là công cụ, không phải cội nguồn của ý thức đoàn kết dân tộc." },
+                    { text: "Việc sử dụng chung một loại tiền tệ quốc tế.", isCorrect: false, rationale: "Tiền tệ phục vụ kinh tế, không phải gốc rễ của tự hào dân tộc." }
+                ],
+                hint: "Cái gì gắn kết các thế hệ người Việt qua hàng ngàn năm lịch sử?"
+            },
+            {
+                tag: "Bài 2 - Ứng dụng",
+                question: "Khi quy hoạch xây dựng một khu đô thị mới gần khu di tích lịch sử, các nhà quản lý cần lưu ý điều gì?",
+                options: [
+                    { text: "Kết hợp hài hòa giữa phát triển kinh tế hiện đại với bảo tồn, tôn trọng giá trị di tích lịch sử.", isCorrect: true, rationale: "Phát triển phải đi đôi với bảo tồn di sản lịch sử văn hóa." },
+                    { text: "Phá bỏ hoàn toàn di tích để lấy đất xây chung cư cao tầng nhằm tối ưu hóa lợi nhuận.", isCorrect: false, rationale: "Phá bỏ di tích là vi phạm pháp luật bảo tồn và mất đi giá trị lịch sử." },
+                    { text: "Bưng bít thông tin về di tích để người dân không đến tham quan.", isCorrect: false, rationale: "Cần phát huy giá trị di tích." },
+                    { text: "Di dời di tích sang một quốc gia khác.", isCorrect: false, rationale: "Di tích gắn liền với không gian lịch sử bản địa." }
+                ],
+                hint: "Ứng xử đúng đắn giữa hiện đại và truyền thống lịch sử."
+            },
+            {
+                tag: "Bài 2 - Nhận định đúng sai",
+                question: "Đúng hay Sai: Lịch sử chỉ là những câu chuyện đã qua, không có tác động gì đến sự phát triển kinh tế trong thời kỳ chuyển đổi số.",
+                options: [
+                    { text: "Sai. Lịch sử và di sản văn hóa là nguồn lực quan trọng phát triển kinh tế du lịch, công nghiệp văn hóa.", isCorrect: true, rationale: "Công nghiệp văn hóa, du lịch di sản đóng góp tỷ trọng lớn trong nền kinh tế hiện đại." },
+                    { text: "Đúng vì thời đại số chỉ cần công nghệ thông tin và trí tuệ nhân tạo.", isCorrect: false, rationale: "Nhận định này sai vì văn hóa và lịch sử là nền tảng tinh thần không thể thiếu." },
+                    { text: "Đúng với các nước phát triển nhưng sai ở Việt Nam.", isCorrect: false, rationale: "Du lịch di sản Việt Nam cực kỳ phát triển nhờ kho tàng lịch sử." },
+                    { text: "Sai nhưng chỉ đúng trong lĩnh vực nông nghiệp.", isCorrect: false, rationale: "Áp dụng rộng rãi trong nhiều ngành kinh tế dịch vụ." }
+                ],
+                hint: "Các bảo tàng số, du lịch di sản đang đem lại nguồn lợi kinh tế lớn."
+            },
+            {
+                tag: "Bài 2 - Mục đích",
+                question: "Mục đích sâu xa nhất của việc học tập lịch sử là gì?",
+                options: [
+                    { text: "Hiểu quá khứ để sống cho hiện tại tốt hơn và kiến tạo tương lai.", isCorrect: true, rationale: "Học sử để làm chủ hiện tại và định hướng tương lai nhân loại." },
+                    { text: "Thuộc danh sách hàng trăm vị vua và năm tháng chiến trận.", isCorrect: false, rationale: "Thuộc mốc chỉ là phương tiện, mục đích là hiểu bản chất và bài học lịch sử." },
+                    { text: "Để vượt qua các kỳ thi cử lấy điểm số.", isCorrect: false, rationale: "Điểm số chỉ là mục tiêu trước mắt, giá trị dài hạn lớn hơn nhiều." },
+                    { text: "Nhằm khoe khoắn sự hiểu biết về các triều đại cổ xưa.", isCorrect: false, rationale: "Không phải mục đích giáo dục của Sử học." }
+                ],
+                hint: "Quá khứ - Hiện tại - Tương lai có mối liên hệ nhân quả."
+            },
+
+            // Bài 3: Vai trò của sử học (Câu 25 - 37)
+            {
+                tag: "Bài 3 - Sử học và khoa học khác",
+                question: "Sử học có mối quan hệ như thế nào với các ngành khoa học xã hội và nhân văn (Văn học, Triết học, Xã hội học...)?",
+                options: [
+                    { text: "Cung cấp bối cảnh không gian, thời gian và cơ sở thực tiễn cho các ngành đó.", isCorrect: true, rationale: "Sử học cung cấp nền tảng tiến trình thời gian và bối cảnh để các khoa học khác nghiên cứu sâu hơn." },
+                    { text: "Hoàn toàn độc lập, không có sự giao thoa hay hỗ trợ lẫn nhau.", isCorrect: false, rationale: "Các ngành khoa học xã hội có sự gắn kết chặt chẽ với nhau." },
+                    { text: "Sử học chi phối và làm lu mờ toàn bộ các ngành khoa học khác.", isCorrect: false, rationale: "Các ngành hỗ trợ qua lại chứ không làm lu mờ." },
+                    { text: "Các ngành xã hội nhân văn không cần dữ liệu của Sử học.", isCorrect: false, rationale: "Các ngành đều cần dữ liệu quá khứ do Sử học cung cấp." }
+                ],
+                hint: "Muốn hiểu tư tưởng triết học hay văn học thời kỳ nào, phải đặt trong bối cảnh lịch sử nào?"
+            },
+            {
+                tag: "Bài 3 - Khoa học tự nhiên",
+                question: "Khoa học tự nhiên và công nghệ hỗ trợ Sử học qua phương pháp nào tiêu biểu?",
+                options: [
+                    { text: "Xác định niên đại bằng đồng vị phóng xạ (C-14), phân tích ADN cổ học và công nghệ số hóa 3D.", isCorrect: true, rationale: "Khoa học kỹ thuật cung cấp công cụ chính xác để kiểm định niên đại và phục dựng di tích." },
+                    { text: "Sáng tác các bài thơ ca ngợi chiến công lịch sử.", isCorrect: false, rationale: "Thơ ca thuộc về nghệ thuật văn học." },
+                    { text: "Chỉnh sửa các sự kiện lịch sử theo mong muốn chủ quan.", isCorrect: false, rationale: "Khoa học công nghệ giúp khách quan hóa chứ không chỉnh sửa bóp méo." },
+                    { text: "Thay thế hoàn toàn công việc nghiên cứu của các nhà sử học.", isCorrect: false, rationale: "Công nghệ là công cụ hỗ trợ con người nghiên cứu." }
+                ],
+                hint: "Các nhà khảo cổ học dùng phương pháp C-14 để làm gì?"
+            },
+            {
+                tag: "Bài 3 - Di sản",
+                question: "Vai trò của Sử học đối với công tác bảo tồn và phát huy giá trị di sản là gì?",
+                options: [
+                    { text: "Cung cấp cơ sở khoa học để xác định nguồn gốc, giá trị và định hướng phương pháp bảo tồn nguyên trạng.", isCorrect: true, rationale: "Sử học giúp xác minh chính xác giá trị và tuổi đời di sản để bảo tồn không bị sai lệch." },
+                    { text: "Phá bỏ các di sản cũ để xây dựng các trung tâm thương mại hiện đại.", isCorrect: false, rationale: "Sử học bảo vệ di sản chứ không phá bỏ." },
+                    { text: "Thương mại hóa hoàn toàn di sản nhằm mục đích thu lợi nhuận tối đa bằng mọi giá.", isCorrect: false, rationale: "Cần cân bằng giữa bảo tồn và phát triển bền vững." },
+                    { text: "Biến di sản thành tài sản sở hữu riêng của các cá nhân.", isCorrect: false, rationale: "Di sản là tài sản chung của cộng đồng và nhân loại." }
+                ],
+                hint: "Muốn trùng tu một ngôi đền cổ, người ta cần nhà sử học và khảo cổ học xác định điều gì?"
+            },
+            {
+                tag: "Bài 3 - Nhận định đúng sai",
+                question: "Đúng hay Sai: Sử học và công nghệ thông tin không thể kết hợp với nhau trong thời đại số hóa.",
+                options: [
+                    { text: "Sai. Công nghệ thông tin giúp xây dựng cơ sở dữ liệu lớn, bảo tàng ảo 3D và số hóa tài liệu lịch sử cực kỳ hiệu quả.", isCorrect: true, rationale: "Chuyển đổi số trong lịch sử đang rất phát triển (bảo tàng 3D, số hóa tư liệu lưu trữ)." },
+                    { text: "Đúng vì lịch sử là quá khứ truyền thống, không thích hợp với công nghệ hiện đại.", isCorrect: false, rationale: "Công nghệ giúp lưu giữ và lan tỏa lịch sử mạnh mẽ hơn." },
+                    { text: "Đúng vì công nghệ làm sai lệch bản chất lịch sử.", isCorrect: false, rationale: "Công nghệ số hóa giúp bảo lưu nguyên vẹn tài liệu gốc." },
+                    { text: "Sai nhưng chỉ đúng với lĩnh vực khảo cổ học dưới nước.", isCorrect: false, rationale: "Ứng dụng trong mọi lĩnh vực của Sử học." }
+                ],
+                hint: "Bạn đã bao giờ tham quan bảo tàng ảo 3D trên internet chưa?"
+            },
+            {
+                tag: "Bài 3 - Mối quan hệ",
+                question: "Mối quan hệ hai chiều giữa Sử học và di sản văn hóa được thể hiện như thế nào?",
+                options: [
+                    { text: "Sử học nghiên cứu, bảo tồn di sản; ngược lại di sản là nguồn sử liệu trực quan cho Sử học.", isCorrect: true, rationale: "Di sản là nguồn sử liệu quý giá để Sử học nghiên cứu, và Sử học là cơ sở khoa học để bảo tồn di sản." },
+                    { text: "Di sản tồn tại độc lập và không cần bất kỳ sự can thiệp nào của Sử học.", isCorrect: false, rationale: "Không có Sử học, giá trị và nguồn gốc di sản có thể bị mai một hoặc hiểu sai." },
+                    { text: "Sử học tạo ra di sản nhân tạo hoàn toàn mới.", isCorrect: false, rationale: "Di sản là những giá trị thực thể/phi thể thực sự từ quá khứ để lại." },
+                    { text: "Hai lĩnh vực này triệt tiêu lẫn nhau trong thực tiễn.", isCorrect: false, rationale: "Chúng bổ sung và hỗ trợ đắc lực cho nhau." }
+                ],
+                hint: "Di sản vừa là đối tượng nghiên cứu vừa là nguồn tư liệu."
+            },
+            {
+                tag: "Bài 3 - Nhận định đúng sai",
+                question: "Đúng hay Sai: Các ngành khoa học tự nhiên không có đóng góp gì cho sự phát triển của ngành Sử học.",
+                options: [
+                    { text: "Sai. Khoa học tự nhiên cung cấp phương pháp định tuổi, phân tích hóa học vật liệu, y học pháp y khảo cổ.", isCorrect: true, rationale: "Nhờ khoa học tự nhiên, Sử học giải mã được niên đại, thành phần cấu tạo hiện vật cổ vô cùng chính xác." },
+                    { text: "Đúng vì Sử học chỉ sử dụng các văn bản chữ viết cũ.", isCorrect: false, rationale: "Sử học hiện đại kết hợp đa ngành với khoa học tự nhiên và công nghệ." },
+                    { text: "Đúng vì hai lĩnh vực này thuộc hai khối tự nhiên và xã hội tách biệt.", isCorrect: false, rationale: "Khoa học hiện đại mang tính liên ngành rất cao." },
+                    { text: "Sai nhưng chỉ đúng với môn Toán học.", isCorrect: false, rationale: "Thống kê toán học được dùng rộng rãi trong định lượng lịch sử kinh tế - xã hội." }
+                ],
+                hint: "Làm thế nào để biết một chiếc trống đồng có tuổi đời bao nhiêu năm?"
+            },
+            {
+                tag: "Bài 3 - Ứng dụng",
+                question: "Việc ứng dụng công nghệ thực tế ảo (VR) vào các di tích lịch sử mang lại giá trị gì?",
+                options: [
+                    { text: "Giúp người xem trải nghiệm không gian lịch sử chân thực, sinh động và dễ tiếp cận hơn.", isCorrect: true, rationale: "Công nghệ VR tái hiện không gian cổ đại trực quan, phục vụ giáo dục và du lịch thông minh." },
+                    { text: "Làm người xem quên đi hoàn toàn các di tích vật thật ở ngoài đời.", isCorrect: false, rationale: "VR là công cụ hỗ trợ quảng bá, thúc đẩy du khách đến tham quan thực tế." },
+                    { text: "Thay thế hoàn toàn các công trình kiến trúc cổ bằng thế giới ảo.", isCorrect: false, rationale: "Di tích gốc vẫn được bảo tồn nghiêm ngặt ngoài thực tế." },
+                    { text: "Tạo ra các thông tin sai lệch lịch sử để giải trí.", isCorrect: false, rationale: "Ứng dụng VR trong bảo tàng đều dựa trên cơ sở khoa học lịch sử chính xác." }
+                ],
+                hint: "Công nghệ thực tế ảo giúp bạn 'du hành thời gian' về quá khứ ra sao?"
+            },
+            {
+                tag: "Bài 3 - Nhận định đúng sai",
+                question: "Đúng hay Sai: Công tác bảo tồn di sản thiên nhiên chỉ đòi hỏi sự tham gia của ngành Sinh thái học mà không cần Sử học.",
+                options: [
+                    { text: "Sai. Di sản thiên nhiên (như Vịnh Hạ Long, Phong Nha - Kẻ Bàng) cũng gắn liền với giá trị lịch sử hình thành địa chất và lịch sử cư trú của người nguyên thủy.", isCorrect: true, rationale: "Sử học và khảo cổ học kết hợp với sinh thái học để làm rõ giá trị toàn diện của di sản thiên nhiên." },
+                    { text: "Đúng vì thiên nhiên không liên quan đến con người và lịch sử.", isCorrect: false, rationale: "Nhiều di sản thiên nhiên gắn liền với không gian sinh sống của người tiền sử." },
+                    { text: "Đúng vì bảo tồn thiên nhiên chỉ là việc trồng cây.", isCorrect: false, rationale: "Bảo tồn di sản thiên nhiên đòi hỏi nghiên cứu lịch sử hình thành lâu dài." },
+                    { text: "Sai nhưng chỉ đúng với các di sản văn hóa phi vật thể.", isCorrect: false, rationale: "Áp dụng cho cả di sản thiên nhiên." }
+                ],
+                hint: "Các hang động ở Phong Nha - Kẻ Bàng từng là nơi trú ẩn của người nguyên thủy và trong kháng chiến."
+            },
+            {
+                tag: "Bài 3 - Vai trò",
+                question: "Sử học góp phần như thế nào đối với ngành công nghiệp văn hóa hiện nay?",
+                options: [
+                    { text: "Cung cấp chất liệu, cốt truyện, bối cảnh lịch sử cho điện ảnh, văn học, trò chơi điện tử và du lịch.", isCorrect: true, rationale: "Chất liệu lịch sử là nguồn cảm hứng vô tận để phát triển các sản phẩm công nghiệp văn hóa sáng tạo." },
+                    { text: "Ngăn cản sự sáng tạo nghệ thuật của giới trẻ.", isCorrect: false, rationale: "Lịch sử là nền tảng chất liệu giúp sáng tạo thêm phong phú." },
+                    { text: "Chỉ phục vụ cho việc in ấn sách giáo khoa trường học.", isCorrect: false, rationale: "Công nghiệp văn hóa bao gồm điện ảnh, game, thời trang, truyền thông." },
+                    { text: "Làm giảm giá trị kinh tế của các sản phẩm giải trí.", isCorrect: false, rationale: "Các bộ phim lịch sử hay game mang lại doanh thu khổng lồ." }
+                ],
+                hint: "Nhiều bộ phim bom tấn lịch sử hoặc game chiến thuật dựa trên nguồn cốt truyện nào?"
+            },
+            {
+                tag: "Bài 3 - Nhận định đúng sai",
+                question: "Đúng hay Sai: Tri thức sử học không có mối liên hệ nào với các vấn đề thời sự quốc tế đương đại.",
+                options: [
+                    { text: "Sai. Quan hệ quốc tế, xung đột biên giới, ngoại giao hiện nay đều có cội nguồn sâu xa từ lịch sử quá khứ.", isCorrect: true, rationale: "Muốn hiểu rõ các điểm nóng địa chính trị thế giới hiện tại, bắt buộc phải nghiên cứu lịch sử quan hệ giữa các quốc gia." },
+                    { text: "Đúng vì thời sự quốc tế thay đổi từng ngày không liên quan gì đến lịch sử.", isCorrect: false, rationale: "Các vấn đề hiện tại là hệ quả tiếp nối của tiến trình lịch sử." },
+                    { text: "Đúng vì các nhà lãnh đạo thế giới không cần đọc lịch sử.", isCorrect: false, rationale: "Các nhà ngoại giao lớn đều rất am hiểu lịch sử thế giới." },
+                    { text: "Sai nhưng chỉ đúng với khu vực châu Á.", isCorrect: false, rationale: "Đúng với toàn bộ quan hệ quốc tế toàn cầu." }
+                ],
+                hint: "Vì sao các nhà ngoại giao cần phải nắm vững lịch sử quan hệ giữa các nước?"
+            },
+            {
+                tag: "Bài 3 - Nhiệm vụ",
+                question: "Hoạt động bảo tàng học hiện đại gắn liền với Sử học nhằm mục đích gì?",
+                options: [
+                    { text: "Lưu giữ, trưng bày hiện vật và giáo dục lịch sử trực quan cho công chúng.", isCorrect: true, rationale: "Bảo tàng là không gian lưu giữ di sản và truyền thụ tri thức lịch sử đến cộng đồng." },
+                    { text: "Chỉ để cất giấu các cổ vật quý giá không cho ai xem.", isCorrect: false, rationale: "Bảo tàng mở cửa đón công chúng tham quan và học tập." },
+                    { text: "Mua bán trao đổi cổ vật kiếm lời trên thị trường chợ đen.", isCorrect: false, rationale: "Bảo tàng là cơ quan văn hóa nhà nước, bảo vệ di sản." },
+                    { text: "Làm kho chứa đồ cũ không có giá trị.", isCorrect: false, rationale: "Bảo tàng trưng bày các giá trị di sản văn hóa thiêng liêng." }
+                ],
+                hint: "Bạn học được gì khi đến thăm quan Bảo tàng Lịch sử quốc gia?"
+            },
+            {
+                tag: "Bài 3 - Nhận định đúng sai",
+                question: "Đúng hay Sai: Mọi di sản văn hóa sau khi được UNESCO công nhận đều tự động được bảo tồn vĩnh viễn mà không cần sự can thiệp của con người và Sử học.",
+                options: [
+                    { text: "Sai. Việc công nhận chỉ là bước đầu, công tác bảo tồn đòi hỏi sự giám sát khoa học lịch sử, quản lý và trùng tu liên tục.", isCorrect: true, rationale: "Di sản đối mặt với thiên tai, thời gian và tác động con người, luôn cần sự bảo vệ khoa học thường xuyên." },
+                    { text: "Đúng vì danh hiệu UNESCO có quyền năng bảo vệ tuyệt đối.", isCorrect: false, rationale: "Danh hiệu không thể ngăn chặn sự xuống cấp tự nhiên nếu thiếu sự chăm sóc của con người." },
+                    { text: "Đúng vì di sản thiên nhiên tự phục hồi hoàn toàn.", isCorrect: false, rationale: "Nhiều di sản thiên nhiên cần sự bảo vệ nghiêm ngặt trước các hành vi xâm hại." },
+                    { text: "Sai nhưng chỉ đúng với di sản vật thể.", isCorrect: false, rationale: "Đúng với cả di sản vật thể và phi vật thể." }
+                ],
+                hint: "Nhiều di sản thế giới vẫn nằm trong danh sách cần bảo vệ khẩn cấp do đâu?"
+            },
+            {
+                tag: "Bài 3 - Tổng kết",
+                question: "Ý nghĩa lớn nhất của việc kết hợp liên ngành giữa Sử học và các khoa học khác là gì?",
+                options: [
+                    { text: "Giúp khôi phục bức tranh quá khứ toàn diện, khách quan và chính xác nhất.", isCorrect: true, rationale: "Sự kết hợp đa ngành giúp giải mã quá khứ từ nhiều góc độ khoa học khác nhau một cách toàn diện." },
+                    { text: "Làm phức tạp hóa vấn đề lịch sử vốn rất đơn giản.", isCorrect: false, rationale: "Khoa học liên ngành giúp làm sáng tỏ vấn đề chứ không làm phức tạp hóa vô ích." },
+                    { text: "Giảm bớt vai trò của các nhà sử học chuyên nghiệp.", isCorrect: false, rationale: "Nâng cao vị thế và độ chính xác của nghiên cứu sử học." },
+                    { text: "Chỉ phục vụ mục đích thương mại hóa xuất bản sách.", isCorrect: false, rationale: "Mục đích là chân lý khoa học và giáo dục." }
+                ],
+                hint: "Nhiều góc khuất lịch sử được sáng tỏ nhờ sự chung tay của nhiều ngành khoa học."
+            },
+
+            // Bài 4: Khái niệm văn minh và các nền văn minh phương Đông cổ - trung đại (Câu 38 - 50)
+            {
+                tag: "Bài 4 - Khái niệm văn minh",
+                question: "Khái niệm 'văn minh' khác với 'văn hóa' ở điểm cơ bản nào?",
+                options: [
+                    { text: "Văn minh là trạng thái phát triển cao của văn hóa, gắn liền với sự xuất hiện nhà nước, đô thị và chữ viết.", isCorrect: true, rationale: "Văn minh là đỉnh cao của văn hóa, đánh dấu bước ngoặt xã hội có nhà nước và chữ viết." },
+                    { text: "Văn hóa ra đời sau văn minh hàng ngàn năm.", isCorrect: false, rationale: "Văn hóa xuất hiện từ thời nguyên thủy, trước văn minh rất lâu." },
+                    { text: "Văn minh chỉ bao gồm các giá trị tinh thần, còn văn hóa chỉ có vật chất.", isCorrect: false, rationale: "Cả hai đều bao gồm vật chất và tinh thần, nhưng văn minh chỉ giai đoạn phát triển cao." },
+                    { text: "Hai khái niệm này hoàn toàn đồng nhất, không có điểm khác biệt.", isCorrect: false, rationale: "Mọi văn minh đều thuộc văn hóa, nhưng không phải mọi văn hóa đều đạt trình độ văn minh." }
+                ],
+                hint: "Xã hội loài người bắt đầu bước vào thời kỳ 'văn minh' khi nào xuất hiện?"
+            },
+            {
+                tag: "Bài 4 - Văn minh Ai Cập",
+                question: "Nền văn minh Ai Cập cổ đại được hình thành và phát triển bên lưu vực con sông nào?",
+                options: [
+                    { text: "Sông Nin.", isCorrect: true, rationale: "Ai Cập cổ đại phát triển rực rỡ bên lưu vực sông Nin ở Đông Bắc Phi." },
+                    { text: "Sông Ấn và sông Hằng.", isCorrect: false, rationale: "Đây là lưu vực của văn minh Ấn Độ cổ đại." },
+                    { text: "Sông Hoàng Hà và sông Trường Giang.", isCorrect: false, rationale: "Đây là lưu vực của văn minh Trung Hoa cổ đại." },
+                    { text: "Sông Ti-gơ-rít và Ơ-phrát.", isCorrect: false, rationale: "Đây là lưu vực của văn minh Lưỡng Hà cổ đại." }
+                ],
+                hint: "Sông Nin được coi là 'tặng phẩm' nuôi dưỡng nền văn minh này."
+            },
+            {
+                tag: "Bài 4 - Thành tựu Ai Cập",
+                question: "Thành tựu kiến trúc nổi bật nhất của cư dân Ai Cập cổ đại là gì?",
+                options: [
+                    { text: "Kim tự tháp và tượng Nhân sư.", isCorrect: true, rationale: "Kim tự tháp Ai Cập là kỳ quan kiến trúc vĩ đại thể hiện trình độ toán học và kỹ thuật tổ chức cao." },
+                    { text: "Vạn Lý Trường Thành.", isCorrect: false, rationale: "Đây là thành tựu của văn minh Trung Hoa." },
+                    { text: "Đền lăng Tạc Ma-han (Taj Mahal).", isCorrect: false, rationale: "Đây là công trình kiến trúc thời trung đại Ấn Độ." },
+                    { text: "Thành Ba-bi-lon với vườn treo.", isCorrect: false, rationale: "Đây là thành tựu của văn minh Lưỡng Hà." }
+                ],
+                hint: "Những lăng mộ khổng lồ hình chóp của các pharaon."
+            },
+            {
+                tag: "Bài 4 - Văn minh Ấn Độ",
+                question: "Tôn giáo nào sau đây ra đời ở Ấn Độ cổ đại và sau đó truyền bá rộng rãi ra nhiều nước châu Á?",
+                options: [
+                    { text: "Phật giáo.", isCorrect: true, rationale: "Phật giáo do Sích-ta-ta Gô-ta-ma (Thích Ca Mâu Ni) sáng lập tại Ấn Độ cổ đại." },
+                    { text: "Thiên Chúa giáo.", isCorrect: false, rationale: "Thiên Chúa giáo ra đời ở vùng Trung Đông (Palestine)." },
+                    { text: "Hồi giáo.", isCorrect: false, rationale: "Hồi giáo ra đời tại bán đảo Ả Rập vào thế kỷ VII." },
+                    { text: "Nho giáo.", isCorrect: false, rationale: "Nho giáo ra đời tại Trung Hoa." }
+                ],
+                hint: "Đạo Phật xuất phát từ Ấn Độ với triết lý từ bi, bác ái."
+            },
+            {
+                tag: "Bài 4 - Thành tựu Ấn Độ",
+                question: "Thành tựu toán học vĩ đại nào của người Ấn Độ cổ đại vẫn được nhân loại sử dụng phổ biến ngày nay?",
+                options: [
+                    { text: "Hệ thống mười chữ số (bao gồm cả chữ số 0).", isCorrect: true, rationale: "Phát minh ra hệ thống số đếm từ 0 đến 9 của người Ấn Độ là cống hiến vĩ đại cho toán học nhân loại." },
+                    { text: "Hệ thống hình học không gian Ơ-clít.", isCorrect: false, rationale: "Đây là thành tựu của văn minh Hy Lạp cổ đại phương Tây." },
+                    { text: "Định lý Py-ta-go trong tam giác vuông.", isCorrect: false, rationale: "Py-ta-go thuộc về Hy Lạp cổ đại." },
+                    { text: "Thuật toán giải phương trình đạo hàm.", isCorrect: false, rationale: "Đạo hàm phát triển muộn hơn ở giai đoạn cận đại phương Tây." }
+                ],
+                hint: "Không có con số này, toán học hiện đại và máy tính không thể hoạt động."
+            },
+            {
+                tag: "Bài 4 - Văn minh Trung Hoa",
+                question: "Bốn phát minh lớn (Tứ đại phát minh) về kỹ thuật của văn minh Trung Hoa cổ - trung đại gồm những gì?",
+                options: [
+                    { text: "Giấy viết, nghề in, la bàn và thuốc súng.", isCorrect: true, rationale: "Giấy, kỹ thuật in, la bàn và thuốc súng là 4 phát minh kỹ thuật chấn động thay đổi thế giới của Trung Hoa." },
+                    { text: "Bánh xe, luyện sắt, kính thiên văn và động cơ hơi nước.", isCorrect: false, rationale: "Động cơ hơi nước thuộc về Cách mạng công nghiệp phương Tây." },
+                    { text: "Lịch mặt trời, hình học, ướp xác và thủy tinh.", isCorrect: false, rationale: "Đây là các thành tựu chủ yếu của Ai Cập và Lưỡng Hà." },
+                    { text: "Số 0, chữ Phạn, thiên văn học và đạo Bà-la-môn.", isCorrect: false, rationale: "Đây là thành tựu của Ấn Độ cổ đại." }
+                ],
+                hint: "Trong đó có vật liệu để viết, dụng cụ chỉ hướng đi biển và chất nổ."
+            },
+            {
+                tag: "Bài 4 - Nhận định đúng sai",
+                question: "Đúng hay Sai: Các nền văn minh phương Đông cổ đại đều hình thành chủ yếu trên lưu vực các dòng sông lớn nhờ đất phù sa màu mỡ.",
+                options: [
+                    { text: "Đúng. Nông nghiệp tưới tiêu đòi hỏi nguồn nước phù sa dồi dào từ các con sông lớn là đặc điểm chung của văn minh phương Đông.", isCorrect: true, rationale: "Văn minh phương Đông gắn liền với sông Nin, sông Ấn - Hằng, sông Hoàng Hà - Trường Giang." },
+                    { text: "Sai. Văn minh phương Đông hình thành chủ yếu trên các vùng núi cao khô cằn.", isCorrect: false, rationale: "Vùng núi cao không thuận lợi cho nông nghiệp lúa nước quy mô lớn thời cổ đại." },
+                    { text: "Sai vì văn minh phương Đông phát triển hoàn toàn dựa vào hàng hải thương mại biển.", isCorrect: false, rationale: "Thương mại biển là đặc trưng nổi bật hơn của văn minh Hy Lạp - La Mã phương Tây." },
+                    { text: "Đúng nhưng chỉ đúng với nền văn minh Ấn Độ.", isCorrect: false, rationale: "Đúng với toàn bộ các nền văn minh phương Đông cổ đại." }
+                ],
+                hint: "Vì sao các nhà nước phương Đông cổ đại còn được gọi là văn minh nông nghiệp lưu vực sông?"
+            },
+            {
+                tag: "Bài 4 - Tư tưởng Trung Hoa",
+                question: "Hệ thống tư tưởng nào trở thành nền tảng chính trị, đạo đức và trật tự xã hội phong kiến Trung Hoa?",
+                options: [
+                    { text: "Nho giáo.", isCorrect: true, rationale: "Nho giáo do Khổng Tử sáng lập đề cao đạo đức, trật tự tam cương ngũ thường, là cốt lõi phong kiến phương Đông." },
+                    { text: "Thiên Chúa giáo.", isCorrect: false, rationale: "Đây là tôn giáo phương Tây." },
+                    { text: "Phật giáo Đại thừa.", isCorrect: false, rationale: "Phật giáo chú trọng giải thoát, từ bi, không phải hệ tư tưởng cai trị chính trị cốt lõi của triều đình." },
+                    { text: "Đạo Hồi.", isCorrect: false, rationale: "Đạo Hồi phát triển mạnh ở Trung Đông và Tây Á." }
+                ],
+                hint: "Tư tưởng của Khổng Tử bàn về nhân, nghĩa, lễ, trí, tín."
+            },
+            {
+                tag: "Bài 4 - Chữ viết",
+                question: "Loại chữ viết cổ nhất của người Ai Cập cổ đại được gọi là gì?",
+                options: [
+                    { text: "Chữ tượng hình (Hieroglyphics).", isCorrect: true, rationale: "Người Ai Cập dùng chữ tượng hình khắc trên đá hoặc viết trên giấy pa-pi-rút." },
+                    { text: "Chữ hình nêm (Cuneiform).", isCorrect: false, rationale: "Chữ hình nêm là của người Lưỡng Hà cổ đại (Sume)." },
+                    { text: "Chữ Giáp cốt.", isCorrect: false, rationale: "Chữ Giáp cốt khắc trên mai rùa, xương thú của Trung Hoa." },
+                    { text: "Chữ Phạn (Sanskrit).", isCorrect: false, rationale: "Chữ Phạn là chữ viết cổ của Ấn Độ." }
+                ],
+                hint: "Chữ viết vẽ các hình thù người, chim, thú, đồ vật..."
+            },
+            {
+                tag: "Bài 4 - Kiến trúc",
+                question: "Công trình kiến trúc lăng mộ nổi tiếng thế giới 'Tạc Ma-han' (Taj Mahal) ở Ấn Độ được xây dựng dưới thời kỳ triều đại nào?",
+                options: [
+                    { text: "Vương triều Mô-gôn (Hồi giáo).", isCorrect: true, rationale: "Lăng Taj Mahal tuyệt đẹp được vua Shah Jahan xây cho hoàng hậu, thuộc thời kỳ Hồi giáo Mô-gôn." },
+                    { text: "Vương triều Gúp-ta.", isCorrect: false, rationale: "Thời Gúp-ta là thời kỳ hoàng kim của Hindu giáo và Phật giáo cổ đại." },
+                    { text: "Thời kỳ văn minh lưu vực sông Ấn.", isCorrect: false, rationale: "Đây là giai đoạn cổ đại rất sớm." },
+                    { text: "Thời kỳ thuộc địa Anh.", isCorrect: false, rationale: "Công trình xây dựng thời phong kiến trung đại." }
+                ],
+                hint: "Đây là biểu tượng tình yêu vĩnh cửu bằng đá cẩm thạch trắng."
+            },
+            {
+                tag: "Bài 4 - Nhận định đúng sai",
+                question: "Đúng hay Sai: Chữ Giáp cốt của Trung Hoa cổ đại được khắc trên các phiến đất sét khi còn ẩm.",
+                options: [
+                    { text: "Sai. Chữ Giáp cốt được khắc trên mai rùa và xương thú dùng trong bói toán.", isCorrect: true, rationale: "Chữ Giáp cốt là dạng chữ tượng hình cổ sơ được khắc trên mai rùa, xương vai bò của nhà Thương." },
+                    { text: "Đúng. Đất sét ẩm là chất liệu chính của chữ Giáp cốt.", isCorrect: false, rationale: "Đất sét ẩm khắc chữ hình nêm là của người Lưỡng Hà, không phải Giáp cốt Trung Hoa." },
+                    { text: "Đúng. Được viết trên giấy pa-pi-rút mịn.", isCorrect: false, rationale: "Giấy pa-pi-rút là của Ai Cập." },
+                    { text: "Sai hoàn toàn vì chữ Giáp cốt viết trên lụa tơ tằm.", isCorrect: false, rationale: "Chữ Giáp cốt khắc trực tiếp trên mai rùa xương thú." }
+                ],
+                hint: "'Giáp' nghĩa là mai rùa, giáp xác; 'cốt' nghĩa là xương."
+            },
+            {
+                tag: "Bài 4 - Y học",
+                question: "Kỹ thuật y học nào đạt thành tựu cực kỳ rực rỡ ở Ai Cập cổ đại do nhu cầu tín ngưỡng tôn giáo về thế giới bên kia?",
+                options: [
+                    { text: "Thuật ướp xác.", isCorrect: true, rationale: "Người Ai Cập tin vào sự sống sau cái chết nên đã phát triển thuật ướp xác và giải phẫu cơ thể rất giỏi." },
+                    { text: "Phẫu thuật não bằng laser siêu nhỏ.", isCorrect: false, rationale: "Đó là công nghệ y học hiện đại ngày nay." },
+                    { text: "Châm cứu bấm huyệt cổ truyền.", isCorrect: false, rationale: "Châm cứu là thành tựu y học cổ truyền của Trung Hoa." },
+                    { text: "Y học Ayurveda thảo dược.", isCorrect: false, rationale: "Ayurveda là y học truyền thống của Ấn Độ cổ đại." }
+                ],
+                hint: "Xác ướp pharaon được bảo quản ngàn năm nhờ kỹ thuật này."
+            },
+            {
+                tag: "Bài 4 - Tổng kết văn minh",
+                question: "Điểm chung nổi bật nhất về chế độ chính trị của các nhà nước phương Đông cổ đại là gì?",
+                options: [
+                    { text: "Chế độ quân chủ chuyên chế trung ương tập quyền (vua nắm quyền lực tối cao).", isCorrect: true, rationale: "Do nhu cầu trị thủy làm thủy lợi lớn, nhà nước phương Đông sớm hình thành chế độ quân chủ chuyên chế tập quyền." },
+                    { text: "Chế độ dân chủ chủ nô với quyền bầu cử rộng rãi cho mọi công dân.", isCorrect: false, rationale: "Dân chủ chủ nô là đặc trưng của Hy Lạp - La Mã phương Tây cổ đại." },
+                    { text: "Chế độ liên bang phân quyền tản mạn cho các lãnh chúa.", isCorrect: false, rationale: "Đặc trưng của phong kiến châu Âu trung đại." },
+                    { text: "Chế độ tự quản cộng đồng làng xã không có nhà nước.", isCorrect: false, rationale: "Các nhà nước phương Đông có bộ máy nhà nước trung ương tập quyền rất mạnh." }
+                ],
+                hint: "Quyền lực tập trung toàn bộ vào tay nhà vua (Pharaon, Thiên tử, Quốc vương...)."
+            }
+        ];
+
+        let currentIdx = 0;
+        let score = 0;
+        let answered = false;
+
+        const startScreen = document.getElementById('start-screen');
+        const quizScreen = document.getElementById('quiz-screen');
+        const resultScreen = document.getElementById('result-screen');
+        
+        const questionCounter = document.getElementById('question-counter');
+        const scoreTracker = document.getElementById('score-tracker');
+        const questionTag = document.getElementById('question-tag');
+        const questionText = document.getElementById('question-text');
+        const optionsContainer = document.getElementById('options-container');
+        const explanationBox = document.getElementById('explanation-box');
+        const explanationTitle = document.getElementById('explanation-title');
+        const explanationText = document.getElementById('explanation-text');
+        const nextBtn = document.getElementById('next-btn');
+
+        function startQuiz() {
+            startScreen.classList.add('hidden');
+            quizScreen.classList.remove('hidden');
+            currentIdx = 0;
+            score = 0;
+            loadQuestion();
+        }
+
+        function loadQuestion() {
+            answered = false;
+            explanationBox.classList.add('hidden');
+            nextBtn.classList.add('hidden');
+
+            const q = questions[currentIdx];
+            questionCounter.innerText = `Câu ${currentIdx + 1} / ${questions.length}`;
+            scoreTracker.innerText = `Điểm: ${score}`;
+            questionTag.innerText = q.tag;
+            questionText.innerText = q.question;
+
+            optionsContainer.innerHTML = '';
+            
+            // Randomize options display order for better quiz experience
+            const shuffledOptions = [...q.options].sort(() => Math.random() - 0.5);
+
+            shuffledOptions.forEach((opt) => {
+                const btn = document.createElement('button');
+                btn.className = "w-full text-left p-4 rounded-xl border border-slate-200 bg-white hover:border-indigo-500 hover:bg-indigo-50/30 transition text-slate-700 font-medium text-sm md:text-base flex items-center justify-between shadow-sm";
+                btn.innerHTML = `<span>${opt.text}</span>`;
+                btn.onclick = () => selectOption(opt, btn, shuffledOptions);
+                optionsContainer.appendChild(btn);
+            });
+        }
+
+        function selectOption(selectedOpt, selectedBtn, allOptions) {
+            if (answered) return;
+            answered = true;
+
+            const buttons = optionsContainer.querySelectorAll('button');
+            buttons.forEach(b => b.disabled = true);
+
+            if (selectedOpt.isCorrect) {
+                score++;
+                selectedBtn.classList.remove('border-slate-200', 'bg-white', 'hover:border-indigo-500', 'hover:bg-indigo-50/30');
+                selectedBtn.classList.add('bg-emerald-50', 'border-emerald-500', 'text-emerald-900', 'font-semibold');
+                
+                explanationTitle.innerText = "Chính xác!";
+                explanationTitle.className = "font-bold text-sm mb-1 text-emerald-700";
+                explanationBox.className = "mb-6 p-4 rounded-xl border bg-emerald-50/50 border-emerald-200";
+            } else {
+                selectedBtn.classList.remove('border-slate-200', 'bg-white', 'hover:border-indigo-500', 'hover:bg-indigo-50/30');
+                selectedBtn.classList.add('bg-rose-50', 'border-rose-500', 'text-rose-900');
+
+                // Highlight correct one
+                buttons.forEach((b, idx) => {
+                    if (allOptions[idx].isCorrect) {
+                        b.classList.remove('border-slate-200', 'bg-white');
+                        b.classList.add('bg-emerald-50', 'border-emerald-500', 'text-emerald-900', 'font-semibold');
+                    }
+                });
+
+                explanationTitle.innerText = "Chưa chính xác!";
+                explanationTitle.className = "font-bold text-sm mb-1 text-rose-700";
+                explanationBox.className = "mb-6 p-4 rounded-xl border bg-rose-50/50 border-rose-200";
+            }
+
+            explanationText.innerText = selectedOpt.rationale;
+            explanationBox.classList.remove('hidden');
+            scoreTracker.innerText = `Điểm: ${score}`;
+
+            if (currentIdx < questions.length - 1) {
+                nextBtn.innerText = "Câu tiếp theo";
+            } else {
+                nextBtn.innerText = "Xem kết quả";
+            }
+            nextBtn.classList.remove('hidden');
+        }
+
+        function nextQuestion() {
+            currentIdx++;
+            if (currentIdx < questions.length) {
+                loadQuestion();
+            } else {
+                showResults();
+            }
+        }
+
+        function showResults() {
+            quizScreen.classList.add('hidden');
+            resultScreen.classList.remove('hidden');
+
+            const badge = document.getElementById('final-score-badge');
+            badge.innerText = `${score}/${questions.length}`;
+
+            const comment = document.getElementById('result-comment');
+            const percentage = (score / questions.length) * 100;
+
+            if (percentage >= 90) {
+                comment.innerText = "Xuất sắc! Bạn đã nắm vững kiến thức trọng tâm từ Bài 1 đến Bài 4 Lịch sử 10 một cách hoàn hảo.";
+            } else if (percentage >= 70) {
+                comment.innerText = "Rất tốt! Bạn hiểu bài khá chắc chắn. Hãy ôn lại một số chi tiết nhỏ để đạt điểm tuyệt đối nhé.";
+            } else if (percentage >= 50) {
+                comment.innerText = "Khá tốt! Bạn đã nắm được các ý chính, hãy đọc lại sách giáo khoa để củng cố thêm các phần sử liệu và văn minh phương Đông.";
+            } else {
+                comment.innerText = "Cần cố gắng hơn! Hãy xem lại tóm tắt lý thuyết các bài học để nắm vững kiến thức cơ bản nhé.";
+            }
+        }
+
+        function restartQuiz() {
+            resultScreen.classList.add('hidden');
+            startScreen.classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>
+```eof
+
+---
+
+### Tóm tắt nội dung bài kiểm tra:
+* **Tổng số câu hỏi:** 50 câu (bao gồm cả trắc nghiệm nhiều lựa chọn và dạng nhận định đúng/sai).
+* **Phạm vi kiến thức:** 
+  * **Bài 1:** Hiện thực lịch sử, nhận thức lịch sử, đối tượng và nguồn sử liệu.
+  * **Bài 2:** Vai trò của tri thức lịch sử trong đời sống và yêu cầu học tập lịch sử suốt đời.
+  * **Bài 3:** Vai trò của sử học với các ngành khoa học và công tác bảo tồn di sản.
+  * **Bài 4:** Khái niệm văn minh, các nền văn minh phương Đông cổ đại (Ai Cập, Ấn Độ, Trung Hoa).
+
+Bạn chỉ cần lưu đoạn mã trên thành một tệp có phần mở rộng `.html` (ví dụ: `lich_su_10.html`) rồi mở bằng bất kỳ trình duyệt web nào (Chrome, Edge, Safari) để bắt đầu làm bài và xem giải thích chi tiết cho từng câu nhé! Chúc bạn ôn tập thật tốt và đạt kết quả cao!
