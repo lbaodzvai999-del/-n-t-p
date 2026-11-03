@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kiểm tra Lịch sử lớp 10 - Trộn câu hỏi ngẫu nhiên</title>
+    <title>Kiểm tra Lịch sử lớp 10 - Kết nối tri thức</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -32,7 +32,7 @@
             <p class="text-slate-600 max-w-xl mx-auto mb-8 text-sm md:text-base">
                 Hệ thống sẽ tự động xáo trộn ngẫu nhiên toàn bộ 50 câu hỏi từ Bài 1 đến Bài 4 kết hợp trộn cả các đáp án. Mỗi lần bấm "Làm lại" bạn sẽ nhận được một đề thi hoàn toàn mới!
             </p>
-            <button onclick="startQuiz()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-8 py-3.5 rounded-xl shadow-md transition transform hover:-translate-y-0.5">
+            <button onclick="startQuiz()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-8 py-3.5 rounded-xl shadow-md transition transform hover:-translate-y-0.5 cursor-pointer">
                 Bắt đầu làm bài ngay
             </button>
         </div>
@@ -64,7 +64,7 @@
 
             <!-- Navigation Button -->
             <div class="flex justify-end pt-4 border-t">
-                <button id="next-btn" onclick="nextQuestion()" class="hidden bg-indigo-600 hover:bg-indigo-700 text-white font-medium px-6 py-2.5 rounded-xl transition">
+                <button id="next-btn" onclick="nextQuestion()" class="hidden bg-indigo-600 hover:bg-indigo-700 text-white font-medium px-6 py-2.5 rounded-xl transition cursor-pointer">
                     Câu tiếp theo
                 </button>
             </div>
@@ -77,7 +77,7 @@
             </div>
             <h2 class="text-2xl font-bold text-slate-800 mb-2">Hoàn thành bài kiểm tra!</h2>
             <p id="result-comment" class="text-slate-600 mb-6 text-base"></p>
-            <button onclick="restartQuiz()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-8 py-3 rounded-xl shadow-md transition">
+            <button onclick="restartQuiz()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-8 py-3 rounded-xl shadow-md transition cursor-pointer">
                 Làm đề mới khác
             </button>
         </div>
@@ -89,7 +89,7 @@
         Lịch sử lớp 10 - Kết nối tri thức với cuộc sống
     </footer>
 
-    <!-- Quiz Data & Logic Script with Full Randomization -->
+    <!-- Quiz Data & Logic Script -->
     <script>
         const originalQuestions = [
             // Bài 1: Hiện thực lịch sử và nhận thức lịch sử
@@ -389,4 +389,345 @@
             },
             {
                 tag: "Bài 3 - Nhận định đúng sai",
-                question: "Đúng hay Sai
+                question: "Đúng hay Sai: Các ngành khoa học tự nhiên không có đóng góp gì cho sự phát triển của ngành Sử học.",
+                options: [
+                    { text: "Sai. Khoa học tự nhiên cung cấp phương pháp định tuổi, phân tích hóa học vật liệu, y học pháp y khảo cổ.", isCorrect: true, rationale: "Nhờ khoa học tự nhiên, Sử học giải mã được niên đại, thành phần cấu tạo hiện vật cổ vô cùng chính xác." },
+                    { text: "Đúng vì Sử học chỉ sử dụng các văn bản chữ viết cũ.", isCorrect: false, rationale: "Sử học hiện đại kết hợp đa ngành với khoa học tự nhiên và công nghệ." },
+                    { text: "Đúng vì hai lĩnh vực này thuộc hai khối tự nhiên và xã hội tách biệt.", isCorrect: false, rationale: "Khoa học hiện đại mang tính liên ngành rất cao." },
+                    { text: "Sai nhưng chỉ đúng với môn Toán học.", isCorrect: false, rationale: "Thống kê toán học được dùng rộng rãi trong định lượng lịch sử kinh tế - xã hội." }
+                ]
+            },
+            {
+                tag: "Bài 3 - Ứng dụng",
+                question: "Việc ứng dụng công nghệ thực tế ảo (VR) vào các di tích lịch sử mang lại giá trị gì?",
+                options: [
+                    { text: "Giúp người xem trải nghiệm không gian lịch sử chân thực, sinh động và dễ tiếp cận hơn.", isCorrect: true, rationale: "Công nghệ VR tái hiện không gian cổ đại trực quan, phục vụ giáo dục và du lịch thông minh." },
+                    { text: "Làm người xem quên đi hoàn toàn các di tích vật thật ở ngoài đời.", isCorrect: false, rationale: "VR là công cụ hỗ trợ quảng bá, thúc đẩy du khách đến tham quan thực tế." },
+                    { text: "Thay thế hoàn toàn các công trình kiến trúc cổ bằng thế giới ảo.", isCorrect: false, rationale: "Di tích gốc vẫn được bảo tồn nghiêm ngặt ngoài thực tế." },
+                    { text: "Tạo ra các thông tin sai lệch lịch sử để giải trí.", isCorrect: false, rationale: "Ứng dụng VR trong bảo tàng đều dựa trên cơ sở khoa học lịch sử chính xác." }
+                ]
+            },
+            {
+                tag: "Bài 3 - Nhận định đúng sai",
+                question: "Đúng hay Sai: Công tác bảo tồn di sản thiên nhiên chỉ đòi hỏi sự tham gia của ngành Sinh thái học mà không cần Sử học.",
+                options: [
+                    { text: "Sai. Di sản thiên nhiên (như Vịnh Hạ Long, Phong Nha - Kẻ Bàng) cũng gắn liền với giá trị lịch sử hình thành địa chất và lịch sử cư trú của người nguyên thủy.", isCorrect: true, rationale: "Sử học và khảo cổ học kết hợp với sinh thái học để làm rõ giá trị toàn diện của di sản thiên nhiên." },
+                    { text: "Đúng vì thiên nhiên không liên quan đến con người và lịch sử.", isCorrect: false, rationale: "Nhiều di sản thiên nhiên gắn liền với không gian sinh sống của người tiền sử." },
+                    { text: "Đúng vì bảo tồn thiên nhiên chỉ là việc trồng cây.", isCorrect: false, rationale: "Bảo tồn di sản thiên nhiên đòi hỏi nghiên cứu lịch sử hình thành lâu dài." },
+                    { text: "Sai nhưng chỉ đúng với các di sản văn hóa phi vật thể.", isCorrect: false, rationale: "Áp dụng cho cả di sản thiên nhiên." }
+                ]
+            },
+            {
+                tag: "Bài 3 - Vai trò",
+                question: "Sử học góp phần như thế nào đối với ngành công nghiệp văn hóa hiện nay?",
+                options: [
+                    { text: "Cung cấp chất liệu, cốt truyện, bối cảnh lịch sử cho điện ảnh, văn học, trò chơi điện tử và du lịch.", isCorrect: true, rationale: "Chất liệu lịch sử là nguồn cảm hứng vô tận để phát triển các sản phẩm công nghiệp văn hóa sáng tạo." },
+                    { text: "Ngăn cản sự sáng tạo nghệ thuật của giới trẻ.", isCorrect: false, rationale: "Lịch sử là nền tảng chất liệu giúp sáng tạo thêm phong phú." },
+                    { text: "Chỉ phục vụ cho việc in ấn sách giáo khoa trường học.", isCorrect: false, rationale: "Công nghiệp văn hóa bao gồm điện ảnh, game, thời trang, truyền thông." },
+                    { text: "Làm giảm giá trị kinh tế của các sản phẩm giải trí.", isCorrect: false, rationale: "Các bộ phim lịch sử hay game mang lại doanh thu khổng lồ." }
+                ]
+            },
+            {
+                tag: "Bài 3 - Nhận định đúng sai",
+                question: "Đúng hay Sai: Tri thức sử học không có mối liên hệ nào với các vấn đề thời sự quốc tế đương đại.",
+                options: [
+                    { text: "Sai. Quan hệ quốc tế, xung đột biên giới, ngoại giao hiện nay đều có cội nguồn sâu xa từ lịch sử quá khứ.", isCorrect: true, rationale: "Muốn hiểu rõ các điểm nóng địa chính trị thế giới hiện tại, bắt buộc phải nghiên cứu lịch sử quan hệ giữa các quốc gia." },
+                    { text: "Đúng vì thời sự quốc tế thay đổi từng ngày không liên quan gì đến lịch sử.", isCorrect: false, rationale: "Các vấn đề hiện tại là hệ quả tiếp nối của tiến trình lịch sử." },
+                    { text: "Đúng vì các nhà lãnh đạo thế giới không cần đọc lịch sử.", isCorrect: false, rationale: "Các nhà ngoại giao lớn đều rất am hiểu lịch sử thế giới." },
+                    { text: "Sai nhưng chỉ đúng với khu vực châu Á.", isCorrect: false, rationale: "Đúng với toàn bộ quan hệ quốc tế toàn cầu." }
+                ]
+            },
+            {
+                tag: "Bài 3 - Nhiệm vụ",
+                question: "Hoạt động bảo tàng học hiện đại gắn liền với Sử học nhằm mục đích gì?",
+                options: [
+                    { text: "Lưu giữ, trưng bày hiện vật và giáo dục lịch sử trực quan cho công chúng.", isCorrect: true, rationale: "Bảo tàng là không gian lưu giữ di sản và truyền thụ tri thức lịch sử đến cộng đồng." },
+                    { text: "Chỉ để cất giấu các cổ vật quý giá không cho ai xem.", isCorrect: false, rationale: "Bảo tàng mở cửa đón công chúng tham quan và học tập." },
+                    { text: "Mua bán trao đổi cổ vật kiếm lời trên thị trường chợ đen.", isCorrect: false, rationale: "Bảo tàng là cơ quan văn hóa nhà nước, bảo vệ di sản." },
+                    { text: "Làm kho chứa đồ cũ không có giá trị.", isCorrect: false, rationale: "Bảo tàng trưng bày các giá trị di sản văn hóa thiêng liêng." }
+                ]
+            },
+            {
+                tag: "Bài 3 - Nhận định đúng sai",
+                question: "Đúng hay Sai: Mọi di sản văn hóa sau khi được UNESCO công nhận đều tự động được bảo tồn vĩnh viễn mà không cần sự can thiệp của con người và Sử học.",
+                options: [
+                    { text: "Sai. Việc công nhận chỉ là bước đầu, công tác bảo tồn đòi hỏi sự giám sát khoa học lịch sử, quản lý và trùng tu liên tục.", isCorrect: true, rationale: "Di sản đối mặt với thiên tai, thời gian và tác động con người, luôn cần sự bảo vệ khoa học thường xuyên." },
+                    { text: "Đúng vì danh hiệu UNESCO có quyền năng bảo vệ tuyệt đối.", isCorrect: false, rationale: "Danh hiệu không thể ngăn chặn sự xuống cấp tự nhiên nếu thiếu sự chăm sóc của con người." },
+                    { text: "Đúng vì di sản thiên nhiên tự phục hồi hoàn toàn.", isCorrect: false, rationale: "Nhiều di sản thiên nhiên cần sự bảo vệ nghiêm ngặt trước các hành vi xâm hại." },
+                    { text: "Sai nhưng chỉ đúng với di sản vật thể.", isCorrect: false, rationale: "Đúng với cả di sản vật thể và phi vật thể." }
+                ]
+            },
+            {
+                tag: "Bài 3 - Tổng kết",
+                question: "Ý nghĩa lớn nhất của việc kết hợp liên ngành giữa Sử học và các khoa học khác là gì?",
+                options: [
+                    { text: "Giúp khôi phục bức tranh quá khứ toàn diện, khách quan và chính xác nhất.", isCorrect: true, rationale: "Sự kết hợp đa ngành giúp giải mã quá khứ từ nhiều góc độ khoa học khác nhau một cách toàn diện." },
+                    { text: "Làm phức tạp hóa vấn đề lịch sử vốn rất đơn giản.", isCorrect: false, rationale: "Khoa học liên ngành giúp làm sáng tỏ vấn đề chứ không làm phức tạp hóa vô ích." },
+                    { text: "Giảm bớt vai trò của các nhà sử học chuyên nghiệp.", isCorrect: false, rationale: "Nâng cao vị thế và độ chính xác của nghiên cứu sử học." },
+                    { text: "Chỉ phục vụ mục đích thương mại hóa xuất bản sách.", isCorrect: false, rationale: "Mục đích là chân lý khoa học và giáo dục." }
+                ]
+            },
+
+            // Bài 4: Khái niệm văn minh và các nền văn minh phương Đông cổ - trung đại
+            {
+                tag: "Bài 4 - Khái niệm văn minh",
+                question: "Khái niệm 'văn minh' khác với 'văn hóa' ở điểm cơ bản nào?",
+                options: [
+                    { text: "Văn minh là trạng thái phát triển cao của văn hóa, gắn liền với sự xuất hiện nhà nước, đô thị và chữ viết.", isCorrect: true, rationale: "Văn minh là đỉnh cao của văn hóa, đánh dấu bước ngoặt xã hội có nhà nước và chữ viết." },
+                    { text: "Văn hóa ra đời sau văn minh hàng ngàn năm.", isCorrect: false, rationale: "Văn hóa xuất hiện từ thời nguyên thủy, trước văn minh rất lâu." },
+                    { text: "Văn minh chỉ bao gồm các giá trị tinh thần, còn văn hóa chỉ có vật chất.", isCorrect: false, rationale: "Cả hai đều bao gồm vật chất và tinh thần, nhưng văn minh chỉ giai đoạn phát triển cao." },
+                    { text: "Hai khái niệm này hoàn toàn đồng nhất, không có điểm khác biệt.", isCorrect: false, rationale: "Mọi văn minh đều thuộc văn hóa, nhưng không phải mọi văn hóa đều đạt trình độ văn minh." }
+                ]
+            },
+            {
+                tag: "Bài 4 - Văn minh Ai Cập",
+                question: "Nền văn minh Ai Cập cổ đại được hình thành và phát triển bên lưu vực con sông nào?",
+                options: [
+                    { text: "Sông Nin.", isCorrect: true, rationale: "Ai Cập cổ đại phát triển rực rỡ bên lưu vực sông Nin ở Đông Bắc Phi." },
+                    { text: "Sông Ấn và sông Hằng.", isCorrect: false, rationale: "Đây là lưu vực của văn minh Ấn Độ cổ đại." },
+                    { text: "Sông Hoàng Hà và sông Trường Giang.", isCorrect: false, rationale: "Đây là lưu vực của văn minh Trung Hoa cổ đại." },
+                    { text: "Sông Ti-gơ-rít và Ơ-phrát.", isCorrect: false, rationale: "Đây là lưu vực của văn minh Lưỡng Hà cổ đại." }
+                ]
+            },
+            {
+                tag: "Bài 4 - Thành tựu Ai Cập",
+                question: "Thành tựu kiến trúc nổi bật nhất của cư dân Ai Cập cổ đại là gì?",
+                options: [
+                    { text: "Kim tự tháp và tượng Nhân sư.", isCorrect: true, rationale: "Kim tự tháp Ai Cập là kỳ quan kiến trúc vĩ đại thể hiện trình độ toán học và kỹ thuật tổ chức cao." },
+                    { text: "Vạn Lý Trường Thành.", isCorrect: false, rationale: "Đây là thành tựu của văn minh Trung Hoa." },
+                    { text: "Đền lăng Tạc Ma-han (Taj Mahal).", isCorrect: false, rationale: "Đây là công trình kiến trúc thời trung đại Ấn Độ." },
+                    { text: "Thành Ba-bi-lon với vườn treo.", isCorrect: false, rationale: "Đây là thành tựu của văn minh Lưỡng Hà." }
+                ]
+            },
+            {
+                tag: "Bài 4 - Văn minh Ấn Độ",
+                question: "Tôn giáo nào sau đây ra đời ở Ấn Độ cổ đại và sau đó truyền bá rộng rãi ra nhiều nước châu Á?",
+                options: [
+                    { text: "Phật giáo.", isCorrect: true, rationale: "Phật giáo do Sích-ta-ta Gô-ta-ma (Thích Ca Mâu Ni) sáng lập tại Ấn Độ cổ đại." },
+                    { text: "Thiên Chúa giáo.", isCorrect: false, rationale: "Thiên Chúa giáo ra đời ở vùng Trung Đông (Palestine)." },
+                    { text: "Hồi giáo.", isCorrect: false, rationale: "Hồi giáo ra đời tại bán đảo Ả Rập vào thế kỷ VII." },
+                    { text: "Nho giáo.", isCorrect: false, rationale: "Nho giáo ra đời tại Trung Hoa." }
+                ]
+            },
+            {
+                tag: "Bài 4 - Thành tựu Ấn Độ",
+                question: "Thành tựu toán học vĩ đại nào của người Ấn Độ cổ đại vẫn được nhân loại sử dụng phổ biến ngày nay?",
+                options: [
+                    { text: "Hệ thống mười chữ số (bao gồm cả chữ số 0).", isCorrect: true, rationale: "Phát minh ra hệ thống số đếm từ 0 đến 9 của người Ấn Độ là cống hiến vĩ đại cho toán học nhân loại." },
+                    { text: "Hệ thống hình học không gian Ơ-clít.", isCorrect: false, rationale: "Đây là thành tựu của văn minh Hy Lạp cổ đại phương Tây." },
+                    { text: "Định lý Py-ta-go trong tam giác vuông.", isCorrect: false, rationale: "Py-ta-go thuộc về Hy Lạp cổ đại." },
+                    { text: "Thuật toán giải phương trình đạo hàm.", isCorrect: false, rationale: "Đạo hàm phát triển muộn hơn ở giai đoạn cận đại phương Tây." }
+                ]
+            },
+            {
+                tag: "Bài 4 - Văn minh Trung Hoa",
+                question: "Bốn phát minh lớn (Tứ đại phát minh) về kỹ thuật của văn minh Trung Hoa cổ - trung đại gồm những gì?",
+                options: [
+                    { text: "Giấy viết, nghề in, la bàn và thuốc súng.", isCorrect: true, rationale: "Giấy, kỹ thuật in, la bàn và thuốc súng là 4 phát minh kỹ thuật chấn động thay đổi thế giới của Trung Hoa." },
+                    { text: "Bánh xe, luyện sắt, kính thiên văn và động cơ hơi nước.", isCorrect: false, rationale: "Động cơ hơi nước thuộc về Cách mạng công nghiệp phương Tây." },
+                    { text: "Lịch mặt trời, hình học, ướp xác và thủy tinh.", isCorrect: false, rationale: "Đây là các thành tựu chủ yếu của Ai Cập và Lưỡng Hà." },
+                    { text: "Số 0, chữ Phạn, thiên văn học và đạo Bà-la-môn.", isCorrect: false, rationale: "Đây là thành tựu của Ấn Độ cổ đại." }
+                ]
+            },
+            {
+                tag: "Bài 4 - Nhận định đúng sai",
+                question: "Đúng hay Sai: Các nền văn minh phương Đông cổ đại đều hình thành chủ yếu trên lưu vực các dòng sông lớn nhờ đất phù sa màu mỡ.",
+                options: [
+                    { text: "Đúng. Nông nghiệp tưới tiêu đòi hỏi nguồn nước phù sa dồi dào từ các con sông lớn là đặc điểm chung của văn minh phương Đông.", isCorrect: true, rationale: "Văn minh phương Đông gắn liền với sông Nin, sông Ấn - Hằng, sông Hoàng Hà - Trường Giang." },
+                    { text: "Sai. Văn minh phương Đông hình thành chủ yếu trên các vùng núi cao khô cằn.", isCorrect: false, rationale: "Vùng núi cao không thuận lợi cho nông nghiệp lúa nước quy mô lớn thời cổ đại." },
+                    { text: "Sai vì văn minh phương Đông phát triển hoàn toàn dựa vào hàng hải thương mại biển.", isCorrect: false, rationale: "Thương mại biển là đặc trưng nổi bật hơn của văn minh Hy Lạp - La Mã phương Tây." },
+                    { text: "Đúng nhưng chỉ đúng với nền văn minh Ấn Độ.", isCorrect: false, rationale: "Đúng với toàn bộ các nền văn minh phương Đông cổ đại." }
+                ]
+            },
+            {
+                tag: "Bài 4 - Tư tưởng Trung Hoa",
+                question: "Hệ thống tư tưởng nào trở thành nền tảng chính trị, đạo đức và trật tự xã hội phong kiến Trung Hoa?",
+                options: [
+                    { text: "Nho giáo.", isCorrect: true, rationale: "Nho giáo do Khổng Tử sáng lập đề cao đạo đức, trật tự tam cương ngũ thường, là cốt lõi phong kiến phương Đông." },
+                    { text: "Thiên Chúa giáo.", isCorrect: false, rationale: "Đây là tôn giáo phương Tây." },
+                    { text: "Phật giáo Đại thừa.", isCorrect: false, rationale: "Phật giáo chú trọng giải thoát, từ bi, không phải hệ tư tưởng cai trị chính trị cốt lõi của triều đình." },
+                    { text: "Đạo Hồi.", isCorrect: false, rationale: "Đạo Hồi phát triển mạnh ở Trung Đông và Tây Á." }
+                ]
+            },
+            {
+                tag: "Bài 4 - Chữ viết",
+                question: "Loại chữ viết cổ nhất của người Ai Cập cổ đại được gọi là gì?",
+                options: [
+                    { text: "Chữ tượng hình (Hieroglyphics).", isCorrect: true, rationale: "Người Ai Cập dùng chữ tượng hình khắc trên đá hoặc viết trên giấy pa-pi-rút." },
+                    { text: "Chữ hình nêm (Cuneiform).", isCorrect: false, rationale: "Chữ hình nêm là của người Lưỡng Hà cổ đại (Sume)." },
+                    { text: "Chữ Giáp cốt.", isCorrect: false, rationale: "Chữ Giáp cốt khắc trên mai rùa, xương thú của Trung Hoa." },
+                    { text: "Chữ Phạn (Sanskrit).", isCorrect: false, rationale: "Chữ Phạn là chữ viết cổ của Ấn Độ." }
+                ]
+            },
+            {
+                tag: "Bài 4 - Kiến trúc",
+                question: "Công trình kiến trúc lăng mộ nổi tiếng thế giới 'Tạc Ma-han' (Taj Mahal) ở Ấn Độ được xây dựng dưới thời kỳ triều đại nào?",
+                options: [
+                    { text: "Vương triều Mô-gôn (Hồi giáo).", isCorrect: true, rationale: "Lăng Taj Mahal tuyệt đẹp được vua Shah Jahan xây cho hoàng hậu, thuộc thời kỳ Hồi giáo Mô-gôn." },
+                    { text: "Vương triều Gúp-ta.", isCorrect: false, rationale: "Thời Gúp-ta là thời kỳ hoàng kim của Hindu giáo và Phật giáo cổ đại." },
+                    { text: "Thời kỳ văn minh lưu vực sông Ấn.", isCorrect: false, rationale: "Đây là giai đoạn cổ đại rất sớm." },
+                    { text: "Thời kỳ thuộc địa Anh.", isCorrect: false, rationale: "Công trình xây dựng thời phong kiến trung đại." }
+                ]
+            },
+            {
+                tag: "Bài 4 - Nhận định đúng sai",
+                question: "Đúng hay Sai: Chữ Giáp cốt của Trung Hoa cổ đại được khắc trên các phiến đất sét khi còn ẩm.",
+                options: [
+                    { text: "Sai. Chữ Giáp cốt được khắc trên mai rùa và xương thú dùng trong bói toán.", isCorrect: true, rationale: "Chữ Giáp cốt là dạng chữ tượng hình cổ sơ được khắc trên mai rùa, xương vai bò của nhà Thương." },
+                    { text: "Đúng. Đất sét ẩm là chất liệu chính của chữ Giáp cốt.", isCorrect: false, rationale: "Đất sét ẩm khắc chữ hình nêm là của người Lưỡng Hà, không phải Giáp cốt Trung Hoa." },
+                    { text: "Đúng. Được viết trên giấy pa-pi-rút mịn.", isCorrect: false, rationale: "Giấy pa-pi-rút là của Ai Cập." },
+                    { text: "Sai hoàn toàn vì chữ Giáp cốt viết trên lụa tơ tằm.", isCorrect: false, rationale: "Chữ Giáp cốt khắc trực tiếp trên mai rùa xương thú." }
+                ]
+            },
+            {
+                tag: "Bài 4 - Y học",
+                question: "Kỹ thuật y học nào đạt thành tựu cực kỳ rực rỡ ở Ai Cập cổ đại do nhu cầu tín ngưỡng tôn giáo về thế giới bên kia?",
+                options: [
+                    { text: "Thuật ướp xác.", isCorrect: true, rationale: "Người Ai Cập tin vào sự sống sau cái chết nên đã phát triển thuật ướp xác và giải phẫu cơ thể rất giỏi." },
+                    { text: "Phẫu thuật não bằng laser siêu nhỏ.", isCorrect: false, rationale: "Đó là công nghệ y học hiện đại ngày nay." },
+                    { text: "Châm cứu bấm huyệt cổ truyền.", isCorrect: false, rationale: "Châm cứu là thành tựu y học cổ truyền của Trung Hoa." },
+                    { text: "Y học Ayurveda thảo dược.", isCorrect: false, rationale: "Ayurveda là y học truyền thống của Ấn Độ cổ đại." }
+                ]
+            },
+            {
+                tag: "Bài 4 - Tổng kết văn minh",
+                question: "Điểm chung nổi bật nhất về chế độ chính trị của các nhà nước phương Đông cổ đại là gì?",
+                options: [
+                    { text: "Chế độ quân chủ chuyên chế trung ương tập quyền (vua nắm quyền lực tối cao).", isCorrect: true, rationale: "Do nhu cầu trị thủy làm thủy lợi lớn, nhà nước phương Đông sớm hình thành chế độ quân chủ chuyên chế tập quyền." },
+                    { text: "Chế độ dân chủ chủ nô với quyền bầu cử rộng rãi cho mọi công dân.", isCorrect: false, rationale: "Dân chủ chủ nô là đặc trưng của Hy Lạp - La Mã phương Tây cổ đại." },
+                    { text: "Chế độ liên bang phân quyền tản mạn cho các lãnh chúa.", isCorrect: false, rationale: "Đặc trưng của phong kiến châu Âu trung đại." },
+                    { text: "Chế độ tự quản cộng đồng làng xã không có nhà nước.", isCorrect: false, rationale: "Các nhà nước phương Đông có bộ máy nhà nước trung ương tập quyền rất mạnh." }
+                ]
+            }
+        ];
+
+        let questions = [];
+        let currentIdx = 0;
+        let score = 0;
+        let answered = false;
+
+        const startScreen = document.getElementById('start-screen');
+        const quizScreen = document.getElementById('quiz-screen');
+        const resultScreen = document.getElementById('result-screen');
+        
+        const questionCounter = document.getElementById('question-counter');
+        const scoreTracker = document.getElementById('score-tracker');
+        const questionTag = document.getElementById('question-tag');
+        const questionText = document.getElementById('question-text');
+        const optionsContainer = document.getElementById('options-container');
+        const explanationBox = document.getElementById('explanation-box');
+        const explanationText = document.getElementById('explanation-text');
+        const nextBtn = document.getElementById('next-btn');
+
+        function startQuiz() {
+            questions = [...originalQuestions].sort(() => Math.random() - 0.5);
+            startScreen.classList.add('hidden');
+            quizScreen.classList.remove('hidden');
+            currentIdx = 0;
+            score = 0;
+            loadQuestion();
+        }
+
+        function loadQuestion() {
+            answered = false;
+            explanationBox.classList.add('hidden');
+            nextBtn.classList.add('hidden');
+
+            const q = questions[currentIdx];
+            questionCounter.innerText = `Câu ${currentIdx + 1} / ${questions.length}`;
+            scoreTracker.innerText = `Điểm: ${score}`;
+            questionTag.innerText = q.tag;
+            questionText.innerText = q.question;
+
+            optionsContainer.innerHTML = '';
+            
+            const shuffledOptions = [...q.options].sort(() => Math.random() - 0.5);
+
+            shuffledOptions.forEach((opt) => {
+                const btn = document.createElement('button');
+                btn.className = "w-full text-left p-4 rounded-xl border border-slate-200 bg-white hover:border-indigo-500 hover:bg-indigo-50/30 transition text-slate-700 font-medium text-sm md:text-base flex items-center justify-between shadow-sm cursor-pointer";
+                btn.innerHTML = `<span>${opt.text}</span>`;
+                btn.onclick = () => selectOption(opt, btn, shuffledOptions);
+                optionsContainer.appendChild(btn);
+            });
+        }
+
+        function selectOption(selectedOpt, selectedBtn, allOptions) {
+            if (answered) return;
+            answered = true;
+
+            const buttons = optionsContainer.querySelectorAll('button');
+            buttons.forEach(b => {
+                b.disabled = true;
+                b.classList.remove('cursor-pointer');
+                b.classList.add('cursor-default');
+            });
+
+            if (selectedOpt.isCorrect) {
+                score++;
+                selectedBtn.classList.remove('border-slate-200', 'bg-white', 'hover:border-indigo-500', 'hover:bg-indigo-50/30');
+                selectedBtn.classList.add('bg-emerald-50', 'border-emerald-500', 'text-emerald-900', 'font-semibold');
+                explanationBox.className = "mb-6 p-4 rounded-xl border bg-emerald-50/50 border-emerald-200";
+            } else {
+                selectedBtn.classList.remove('border-slate-200', 'bg-white', 'hover:border-indigo-500', 'hover:bg-indigo-50/30');
+                selectedBtn.classList.add('bg-rose-50', 'border-rose-500', 'text-rose-900');
+
+                buttons.forEach((b, idx) => {
+                    if (allOptions[idx].isCorrect) {
+                        b.classList.remove('border-slate-200', 'bg-white');
+                        b.classList.add('bg-emerald-50', 'border-emerald-500', 'text-emerald-900', 'font-semibold');
+                    }
+                });
+
+                explanationBox.className = "mb-6 p-4 rounded-xl border bg-rose-50/50 border-rose-200";
+            }
+
+            explanationText.innerText = selectedOpt.rationale;
+            explanationBox.classList.remove('hidden');
+            scoreTracker.innerText = `Điểm: ${score}`;
+
+            if (currentIdx < questions.length - 1) {
+                nextBtn.innerText = "Câu tiếp theo";
+            } else {
+                nextBtn.innerText = "Xem kết quả";
+            }
+            nextBtn.classList.remove('hidden');
+        }
+
+        function nextQuestion() {
+            currentIdx++;
+            if (currentIdx < questions.length) {
+                loadQuestion();
+            } else {
+                showResults();
+            }
+        }
+
+        function showResults() {
+            quizScreen.classList.add('hidden');
+            resultScreen.classList.remove('hidden');
+
+            const badge = document.getElementById('final-score-badge');
+            badge.innerText = `${score}/${questions.length}`;
+
+            const comment = document.getElementById('result-comment');
+            const percentage = (score / questions.length) * 100;
+
+            if (percentage >= 90) {
+                comment.innerText = "Xuất sắc! Bạn đã nắm vững kiến thức trọng tâm từ Bài 1 đến Bài 4 Lịch sử 10 một cách hoàn hảo.";
+            } else if (percentage >= 70) {
+                comment.innerText = "Rất tốt! Bạn hiểu bài khá chắc chắn. Hãy ôn lại một số chi tiết nhỏ để đạt điểm tuyệt đối nhé.";
+            } else if (percentage >= 50) {
+                comment.innerText = "Khá tốt! Bạn đã nắm được các ý chính, hãy đọc lại sách giáo khoa để củng cố thêm các phần sử liệu và văn minh phương Đông.";
+            } else {
+                comment.innerText = "Cần cố gắng hơn! Hãy xem lại tóm tắt lý thuyết các bài học để nắm vững kiến thức cơ bản nhé.";
+            }
+        }
+
+        function restartQuiz() {
+            resultScreen.classList.add('hidden');
+            startScreen.classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>
